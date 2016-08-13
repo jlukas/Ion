@@ -99,11 +99,13 @@ function DRAENORBTN:PLAYER_ENTERING_WORLD(event, ...)
 	--self:STANCE_UpdateCooldown()
 end
 
+
 local function DraenorZoneAbilityFrame_Update(self)
 	if (not self.baseName) then
 		return;
 	end
 	local name, _, tex, _, _, _, spellID = GetSpellInfo(self.baseName);
+	--ZoneSpellAbility = self.baseName
 
 	self.CurrentTexture = tex;
 	self.CurrentSpell = name;
@@ -156,13 +158,18 @@ local function DraenorZoneAbilityFrame_Update(self)
 	end
 end
 
+local ZoneSpellAbility = nil
+
 function DRAENORBTN:OnEvent(event, ...)
 	local spellID, garrisonType = GetZoneAbilitySpellInfo();
+
+ 
 
 	--if (event == "SPELLS_CHANGED") then
 	if ((event == "SPELLS_CHANGED" or event=="UNIT_AURA") and self.spellID ~= spellID) then
 		--if (not self.baseName) then
 			self.baseName = GetSpellInfo(spellID);
+			ZoneAbilitySpellID = spellID
 		--end
 	end
 
@@ -209,7 +216,7 @@ end
 
 
 function DRAENORBTN:SetTooltip()
-	if (GetSpellInfo(DraenorZoneAbilitySpellID)) then
+	if (GetSpellInfo(ZoneAbilitySpellID)) then
 		if (self.UberTooltips) then
 			GameTooltip:SetSpellByID(self.spellID)
 		else
@@ -391,7 +398,7 @@ function DRAENORBTN:SetAux()
 end
 
 function DRAENORBTN:LoadAux()
-	self.spellID = DraenorZoneAbilitySpellID;
+	self.spellID = ZoneAbilitySpellID;
 	self:CreateBindFrame(self.objTIndex)
 	self.style = self:CreateTexture(nil, "OVERLAY")
 	self.style:SetPoint("CENTER", -2, 1)
@@ -427,7 +434,7 @@ end
 end
 
 function DRAENORBTN:OnDragStart()
-	PickupSpell(DraenorZoneAbilitySpellID)
+	PickupSpell(ZoneAbilitySpellID)
 end
 
 function DRAENORBTN:SetDefaults()
