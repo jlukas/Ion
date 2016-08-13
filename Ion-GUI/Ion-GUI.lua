@@ -2694,7 +2694,14 @@ local function updateIconList()
 
 	for index, icon in ipairs(ICONS) do
 		if (search) then
-			if (icon:lower():find(search:lower()) or index == 1) then
+			local icon_path
+			if type(icon) == "number" then
+				 icon_path = GetFileName(icon)
+			else 
+				icon_path = icon
+			end
+			--if (icon:lower():find(search:lower()) or index == 1) then
+			if (icon_path:lower():find(search:lower()) or index == 1) then
 				tinsert(IconList, icon)
 			end
 		else
