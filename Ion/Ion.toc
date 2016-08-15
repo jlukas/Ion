@@ -39,7 +39,7 @@ Ion_SnapTo.lua
 
 Ion_ExtraBar.lua
 Ion_StanceBar.lua
-Ion_DraenorBar.lua
+Ion_ZoneAbilityBar.lua
 
 Ion-Broker.lua
 

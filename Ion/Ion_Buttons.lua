@@ -1211,7 +1211,7 @@ function BUTTON:MACRO_SetSpellCooldown(spell)
 
 	if (sIndex[spell]) then
 		spell_id = sIndex[spell].spellID
-		local DraenorZoneAbilityID = ZoneAbilityFrame.SpellButton.currentSpellID
+		local ZoneAbilityID = ZoneAbilityFrame.SpellButton.currentSpellID
 		local FairyFireID = 770
 		local FairySwarmID = 102355
 		local GarrisonAbilityID = 161691
@@ -1225,7 +1225,7 @@ function BUTTON:MACRO_SetSpellCooldown(spell)
 			end
 		end
 --Needs work
-		if (spell_id == GarrisonAbilityID and DraenorZoneAbilityID) then spell_id = DraenorZoneAbilityID end
+		if (spell_id == GarrisonAbilityID and ZoneAbilityID) then spell_id = ZoneAbilityID end
 
 		if (morphSpells[spell_id]) then
 			spell_id = morphSpells[spell_id]
@@ -2373,9 +2373,9 @@ end
 function BUTTON:MACRO_SetSpellTooltip(spell)
 	if (sIndex[spell]) then
 		local spell_id = sIndex[spell].spellID
-		local draenor_id = ZoneAbilityFrame.SpellButton.currentSpellID
+		local zoneability_id = ZoneAbilityFrame.SpellButton.currentSpellID
 
-		if spell_id == 161691 and draenor_id then spell_id = draenor_id end
+		if spell_id == 161691 and zoneability_id then spell_id = zoneability_id end
 
 		if (morphSpells[spell_id]) then
 			if (self.UberTooltips) then

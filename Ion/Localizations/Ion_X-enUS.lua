@@ -472,4 +472,4 @@ L.SPELL_TARGETING_SELF_CAST_RIGHTCLICK_SELECT = "Select the Self-Cast Modifier"
 
 L.SPELL_TARGETING_MODIFIER_NONE_REMINDER = "\"None\" as modifier for Self & Focus Casting means its disabled. \nFor Mouse-Over Casting it means its always active, and no modifier is required."
 
-L.DRAENOR_BAR_BORDER = "Show Bar Border"
+L.ZONEABILITY_BAR_BORDER = "Show Bar Border"

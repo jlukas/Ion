@@ -53,7 +53,7 @@ local chkOptions = {
 	[15] = { [0] = "TOOLTIPS", L.TOOLTIPS_OPT, 1, "ToolTipSet" },
 	[16] = { [0] = "TOOLTIPS", L.TOOLTIPS_ENH, 0.9, "ToolTipSet", "enhanced" },
 	[17] = { [0] = "TOOLTIPS", L.TOOLTIPS_COMBAT, 0.9, "ToolTipSet", "combat" },
-	[18] = { [0] = "DRAENOR", L.DRAENOR_BAR_BORDER, 1, "HideDraenorBorder"},
+	[18] = { [0] = "ZONEABILITY", L.ZONEABILITY_BAR_BORDER, 1, "HideZoneAbilityBorder"},
 }
 
 local adjOptions = {

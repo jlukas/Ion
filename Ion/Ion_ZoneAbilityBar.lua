@@ -1,19 +1,18 @@
---Ion Stance Action Bar, a World of Warcraft® user interface addon.
---Copyright© 2006-2012 Connor H. Chenoweth, aka Maul - All rights reserved.
+--Ion Zone Special Ability Bar, a World of Warcraft® user interface addon.
 
 local ION, GDB, CDB, PEW = Ion
 
-ION.DRAENORBTNIndex = {}
+ION.ZONEABILITYRBTNIndex = {}
 
-local DRAENORBTNIndex = ION.DRAENORBTNIndex
+local ZONEABILITYRBTNIndex = ION.ZONEABILITYRBTNIndex
 
 
-local draenorbarsGDB, draenorbarsCDB, draenorbtnsGDB, draenorbtnsCDB
+local zoneabilitybarsGDB, zoneabilitybarsCDB, zoneabilitybtnsGDB, zoneabilitybtnsCDB
 
 local BUTTON = ION.BUTTON
 local BAR = ION.BAR
 
-local DRAENORBTN = setmetatable({}, { __index = CreateFrame("CheckButton") })
+local ZONEABILITYRBTN = setmetatable({}, { __index = CreateFrame("CheckButton") })
 
 local STORAGE = CreateFrame("Frame", nil, UIParent)
 
@@ -71,7 +70,7 @@ end
 --@pram: force - (boolean) will force a texture update
 
 --UPDATE?
-function DRAENORBTN:STANCE_UpdateButton(actionID)
+function ZONEABILITYRBTN:STANCE_UpdateButton(actionID)
 	if (self.editmode) then
 		self.iconframeicon:SetVertexColor(0.2, 0.2, 0.2)
 	elseif (self.spellName) then
@@ -84,7 +83,7 @@ function DRAENORBTN:STANCE_UpdateButton(actionID)
 
 end
 
-function DRAENORBTN:OnUpdate(elapsed)
+function ZONEABILITYRBTN:OnUpdate(elapsed)
 	self.elapsed = self.elapsed + elapsed
 
 	if (self.elapsed > IonGDB.throttle) then
@@ -93,14 +92,14 @@ function DRAENORBTN:OnUpdate(elapsed)
 end
 
 
-function DRAENORBTN:PLAYER_ENTERING_WORLD(event, ...)
+function ZONEABILITYRBTN:PLAYER_ENTERING_WORLD(event, ...)
 	self.binder:ApplyBindings(self)
 	self.updateRightClick = false
 	--self:STANCE_UpdateCooldown()
 end
 
 
-local function DraenorZoneAbilityFrame_Update(self)
+local function ZoneAbilityFrame_Update(self)
 	if (not self.baseName) then
 		return;
 	end
@@ -116,7 +115,7 @@ local function DraenorZoneAbilityFrame_Update(self)
 	--self.SpellButton.Icon:SetTexture(tex);
 
 
-	if draenorbarsGDB[1].border then 
+	if zoneabilitybarsGDB[1].border then 
 
 		self.style:Show()
 	else
@@ -160,7 +159,7 @@ end
 
 local ZoneSpellAbility = nil
 
-function DRAENORBTN:OnEvent(event, ...)
+function ZONEABILITYRBTN:OnEvent(event, ...)
 	local spellID, garrisonType = GetZoneAbilitySpellInfo();
 
  
@@ -183,21 +182,21 @@ function DRAENORBTN:OnEvent(event, ...)
 
 	--local display = false
 	--self:SetChecked(nil)
-	--self.BuffSeen = HasDraenorZoneAbility();
+	--self.BuffSeen = HasZoneAbility();
 
 	if (self.BuffSeen) then
 		--if ( not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_GARRISON_ZONE_ABILITY) ) then
 		if ( not GetCVarBitfield("closedInfoFrames", LE_FRAME_TUTORIAL_GARRISON_ZONE_ABILITY) and garrisonType == LE_GARRISON_TYPE_6_0 ) then
 
-			ZoneAbilityButtonAlert:SetParent("IonDraenorActionButton1")
-			ZoneAbilityButtonAlert:SetPoint("BOTTOM" ,"IonDraenorActionButton1" ,"TOP" ,0,8)
+			ZoneAbilityButtonAlert:SetParent("IonZoneActionButton1")
+			ZoneAbilityButtonAlert:SetPoint("BOTTOM" ,"IonZoneActionButton1" ,"TOP" ,0,8)
 			ZoneAbilityButtonAlert:SetHeight(ZoneAbilityButtonAlert.Text:GetHeight()+42);
 			
 			SetCVarBitfield( "closedInfoFrames", LE_FRAME_TUTORIAL_GARRISON_ZONE_ABILITY, true );
 		end
 
 		display = true
-		DraenorZoneAbilityFrame_Update(self);
+		ZoneAbilityFrame_Update(self);
 	else
 		if (not self.CurrentTexture) then
 			self.CurrentTexture = select(3, GetSpellInfo(self.baseName));
@@ -215,7 +214,7 @@ function DRAENORBTN:OnEvent(event, ...)
 end
 
 
-function DRAENORBTN:SetTooltip()
+function ZONEABILITYRBTN:SetTooltip()
 	if (GetSpellInfo(ZoneAbilitySpellID)) then
 		if (self.UberTooltips) then
 			GameTooltip:SetSpellByID(self.spellID)
@@ -233,7 +232,7 @@ function DRAENORBTN:SetTooltip()
 end
 
 
-function DRAENORBTN:OnEnter(...)
+function ZONEABILITYRBTN:OnEnter(...)
 
 	if (self.bar) then
 		if (self.tooltipsCombat and InCombatLockdown()) then
@@ -256,12 +255,12 @@ function DRAENORBTN:OnEnter(...)
 end
 
 
-function DRAENORBTN:OnLeave ()
+function ZONEABILITYRBTN:OnLeave ()
 	GameTooltip:Hide()
 end
 
 
-function DRAENORBTN:SetData(bar)
+function ZONEABILITYRBTN:SetData(bar)
 
 	if (bar) then
 
@@ -323,16 +322,16 @@ function DRAENORBTN:SetData(bar)
 
 end
 
-function DRAENORBTN:SaveData()
+function ZONEABILITYRBTN:SaveData()
 	-- empty
 end
 
-function DRAENORBTN:LoadData(spec, state)
+function ZONEABILITYRBTN:LoadData(spec, state)
 
 	local id = self.id
 
-	self.GDB = draenorbtnsGDB
-	self.CDB = draenorbtnsCDB
+	self.GDB = zoneabilitybtnsGDB
+	self.CDB = zoneabilitybtnsCDB
 
 	if (self.GDB and self.CDB) then
 
@@ -375,7 +374,7 @@ function DRAENORBTN:LoadData(spec, state)
 	end
 end
 
-function DRAENORBTN:SetGrid(show, hide)
+function ZONEABILITYRBTN:SetGrid(show, hide)
 
 	if (true) then return end
 
@@ -393,11 +392,11 @@ function DRAENORBTN:SetGrid(show, hide)
 	end
 end
 
-function DRAENORBTN:SetAux()
+function ZONEABILITYRBTN:SetAux()
 	self:SetSkinned()
 end
 
-function DRAENORBTN:LoadAux()
+function ZONEABILITYRBTN:LoadAux()
 	self.spellID = ZoneAbilitySpellID;
 	self:CreateBindFrame(self.objTIndex)
 	self.style = self:CreateTexture(nil, "OVERLAY")
@@ -410,42 +409,42 @@ function DRAENORBTN:LoadAux()
 end
 
 
-function DRAENORBTN:OnLoad()
+function ZONEABILITYRBTN:OnLoad()
 	-- empty
 end
 
-function DRAENORBTN:OnShow()
-	--DraenorZoneAbilityFrame_Update(self);
+function ZONEABILITYRBTN:OnShow()
+	--ZoneAbilityFrame_Update(self);
 end
-function DRAENORBTN:OnHide()
-	--DraenorZoneAbilityButtonAlert:Hide();
+function ZONEABILITYRBTN:OnHide()
+	--ZoneAbilityButtonAlert:Hide();
 	-- empty
 end
 
 
-function DRAENORBTN:UpdateFrame()
-if draenorbarsGDB[1].border then 
+function ZONEABILITYRBTN:UpdateFrame()
+if zoneabilitybarsGDB[1].border then 
 
-IonDraenorActionButton1.style:Show()
+IonZoneActionButton1.style:Show()
 else
-IonDraenorActionButton1.style:Hide()
+IonZoneActionButton1.style:Hide()
 end
 	-- empty
 end
 
-function DRAENORBTN:OnDragStart()
+function ZONEABILITYRBTN:OnDragStart()
 	PickupSpell(ZoneAbilitySpellID)
 end
 
-function DRAENORBTN:SetDefaults()
+function ZONEABILITYRBTN:SetDefaults()
 	-- empty
 end
 
-function DRAENORBTN:GetDefaults()
+function ZONEABILITYRBTN:GetDefaults()
 	--empty
 end
 
-function DRAENORBTN:SetType(save)
+function ZONEABILITYRBTN:SetType(save)
 
 	self:RegisterUnitEvent("UNIT_AURA", "player");
 	self:RegisterEvent("SPELL_UPDATE_COOLDOWN");
@@ -467,17 +466,17 @@ function DRAENORBTN:SetType(save)
 	self:SetAttribute("useparent-unit", false)
 	self:SetAttribute("unit", ATTRIBUTE_NOOP)
 
-	self:SetScript("OnEvent", DRAENORBTN.OnEvent)
-	self:SetScript("OnDragStart", DRAENORBTN.OnDragStart)
-	self:SetScript("OnLoad", DRAENORBTN.OnLoad)
-	self:SetScript("OnShow", DRAENORBTN.OnShow)
-	self:SetScript("OnHide", DRAENORBTN.OnHide)
+	self:SetScript("OnEvent", ZONEABILITYRBTN.OnEvent)
+	self:SetScript("OnDragStart", ZONEABILITYRBTN.OnDragStart)
+	self:SetScript("OnLoad", ZONEABILITYRBTN.OnLoad)
+	self:SetScript("OnShow", ZONEABILITYRBTN.OnShow)
+	self:SetScript("OnHide", ZONEABILITYRBTN.OnHide)
 
 
 
-	self:SetScript("OnEnter", DRAENORBTN.OnEnter)
-	self:SetScript("OnLeave", DRAENORBTN.OnLeave)
-	self:SetScript("OnUpdate", DRAENORBTN.OnUpdate)
+	self:SetScript("OnEnter", ZONEABILITYRBTN.OnEnter)
+	self:SetScript("OnLeave", ZONEABILITYRBTN.OnLeave)
+	self:SetScript("OnUpdate", ZONEABILITYRBTN.OnUpdate)
 	self:SetScript("OnAttributeChanged", nil)
 end
 
@@ -487,20 +486,20 @@ local function controlOnEvent(self, event, ...)
 
 		GDB = IonGDB; CDB = IonCDB
 
-		draenorbarsGDB = GDB.draenorbars
-		draenorbarsCDB = CDB.draenorbars
+		zoneabilitybarsGDB = GDB.zoneabilitybars
+		zoneabilitybarsCDB = CDB.zoneabilitybars
 
-		draenorbtnsGDB = GDB.draenorbtns
-		draenorbtnsCDB = CDB.draenorbtns
+		zoneabilitybtnsGDB = GDB.zoneabilitybtns
+		zoneabilitybtnsCDB = CDB.zoneabilitybtns
 
-		DRAENORBTN.SetTimer = BUTTON.SetTimer
-		DRAENORBTN.SetSkinned = BUTTON.SetSkinned
-		DRAENORBTN.GetSkinned = BUTTON.GetSkinned
-		DRAENORBTN.CreateBindFrame = BUTTON.CreateBindFrame
+		ZONEABILITYRBTN.SetTimer = BUTTON.SetTimer
+		ZONEABILITYRBTN.SetSkinned = BUTTON.SetSkinned
+		ZONEABILITYRBTN.GetSkinned = BUTTON.GetSkinned
+		ZONEABILITYRBTN.CreateBindFrame = BUTTON.CreateBindFrame
 
-		ION:RegisterBarClass("draenorbar", "Draenor Action Bar", "Draenor Action Button", draenorbarsGDB, draenorbarsCDB, DRAENORBTNIndex, draenorbtnsGDB, "CheckButton", "IonActionButtonTemplate", { __index = DRAENORBTN }, 1, false, STORAGE, gDef, nil, false)
+		ION:RegisterBarClass("zoneabilitybar", "Zone Action Bar", "Zone Action Button", zoneabilitybarsGDB, zoneabilitybarsCDB, ZONEABILITYRBTNIndex, zoneabilitybtnsGDB, "CheckButton", "IonActionButtonTemplate", { __index = ZONEABILITYRBTN }, 1, false, STORAGE, gDef, nil, false)
 
-		ION:RegisterGUIOptions("draenorbar", { AUTOHIDE = true,
+		ION:RegisterGUIOptions("zoneabilitybar", { AUTOHIDE = true,
 		                                SHOWGRID = false,
 		                                SNAPTO = true,
 		                                UPCLICKS = true,
@@ -512,28 +511,28 @@ local function controlOnEvent(self, event, ...)
 							  RANGEIND = true,
 							  CDTEXT = true,
 							  CDALPHA = true,
-							  DRAENOR = true}, false, 65)
+							  ZONEABILITY = true}, false, 65)
 
-		if (GDB.draenorbarFirstRun) then
+		if (GDB.zoneabilitybarFirstRun) then
 
-			local bar = ION:CreateNewBar("draenorbar", 1, true)
-			local object = ION:CreateNewObject("draenorbar", 1)
+			local bar = ION:CreateNewBar("zoneabilitybar", 1, true)
+			local object = ION:CreateNewObject("zoneabilitybar", 1)
 
 			bar:AddObjectToList(object)
 
-			GDB.draenorbarFirstRun = false
+			GDB.zoneabilitybarFirstRun = false
 
 		else
 
-		for id,data in pairs(draenorbarsGDB) do
+		for id,data in pairs(zoneabilitybarsGDB) do
 				if (data ~= nil) then
-					ION:CreateNewBar("draenorbar", id)
+					ION:CreateNewBar("zoneabilitybar", id)
 				end
 			end
 
-			for id,data in pairs(draenorbtnsGDB) do
+			for id,data in pairs(zoneabilitybtnsGDB) do
 				if (data ~= nil) then
-					ION:CreateNewObject("draenorbar", id)
+					ION:CreateNewObject("zoneabilitybar", id)
 				end
 			end
 		end
@@ -560,7 +559,7 @@ ZoneAbilityFrame:SetScript('OnEvent', nil)
 ZoneAbilityFrame:Hide()
 
 
-function BAR:HideDraenorBorder(msg, gui, checked, query)
+function BAR:HideZoneAbilityBorder(msg, gui, checked, query)
 	if (query) then
 		return Ion.CurrentBar.gdata.border
 	end
@@ -584,7 +583,7 @@ function BAR:HideDraenorBorder(msg, gui, checked, query)
 		end
 	end
 	self:Update()
-	DRAENORBTN:UpdateFrame()
+	ZONEABILITYRBTN:UpdateFrame()
 end
 
 --local alertframe = n

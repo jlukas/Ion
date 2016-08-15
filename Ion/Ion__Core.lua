@@ -73,8 +73,8 @@ IonGDB = {
 	sbars = {},
 	sbtns = {},
 
-	draenorbars = {},
-	draenorbtns = {},
+	zoneabilitybars = {},
+	zoneabilitybtns = {},
 
 	buttonLoc = {-0.85, -111.45},
 	buttonRadius = 87.5,
@@ -84,13 +84,13 @@ IonGDB = {
 	snapToTol = 28,
 
 	mainbar = false,
-	draenorbar = false,
+	zoneabilitybar = false,
 	vehicle = false,
 
 	firstRun = true,
 	xbarFirstRun = true,
 	sbarFirstRun = true,
-	draenorbarFirstRun = true,
+	zoneabilitybarFirstRun = true,
 
 	betaWarning = true,
 
@@ -109,8 +109,8 @@ IonCDB = {
 	sbars = {},
 	sbtns = {},
 
-	draenorbars = {},
-	draenorbtns = {},
+	zoneabilitybars = {},
+	zoneabilitybtns = {},
 
 	selfCast = false,
 	focusCast = false,
@@ -428,8 +428,8 @@ local defaults = {
 			sbars = {},
 			sbtns = {},
 
-			draenorbars = {},
-			draenorbtns = {},
+			zoneabilitybars = {},
+			zoneabilitybtns = {},
 
 			buttonLoc = {-0.85, -111.45},
 			buttonRadius = 87.5,
@@ -439,13 +439,13 @@ local defaults = {
 			snapToTol = 28,
 
 			mainbar = false,
-			draenorbar = true,
+			zoneabilitybar = true,
 			vehicle = false,
 
 			firstRun = true,
 			xbarFirstRun = true,
 			sbarFirstRun = true,
-			draenorbarFirstRun = true,
+			zoneabilitybarFirstRun = true,
 
 			betaWarning = true,
 
@@ -462,8 +462,8 @@ local defaults = {
 			sbars = {},
 			sbtns = {},
 
-			draenorbars = {},
-			draenorbtns = {},
+			zoneabilitybars = {},
+			zoneabilitybtns = {},
 
 			selfCast = false,
 			focusCast = false,
