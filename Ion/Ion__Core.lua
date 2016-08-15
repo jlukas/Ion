@@ -558,8 +558,9 @@ local slashFunctions = {
 	[44] = "BlizzBar",
 	[45] = "",
 	[46] = "Animate",
-	--[47] = "DraenorBar",
-	[48] = "Debuger",
+	[47] = "MoveSpecButtons",
+	--[48] = "Debuger",
+	--[50] = "MoveSpecButton",
 }
 
 
@@ -1426,11 +1427,9 @@ end
 
 
 function ION:MinimapButton_OnHide(minimap)
-
 	minimap:UnlockHighlight()
 	IonMinimapButtonDragFrame:Hide()
 end
-
 
 function ION:MinimapButton_OnEnter(minimap)
 	GameTooltip_SetDefaultAnchor(GameTooltip, minimap)
@@ -1737,6 +1736,48 @@ function ION:Animate()
 end
 
 
+local function is_valid_spec_id(id, num_specs)
+	return id and id > 0 and id <= num_specs
+end
+
+
+local function get_profile()
+	local char_name = UnitName("player")
+	local realm_name = GetRealmName()
+	local char_and_realm_name = string.format("%s - %s", char_name, realm_name)
+
+	local profile_key = _G.IonProfilesDB.profileKeys[char_and_realm_name]
+	local profile = _G.IonProfilesDB.profiles[profile_key]
+
+	return profile
+end
+
+
+function  ION:MoveSpecButtons(msg)
+	local num_specs = GetNumSpecializations()
+	local spec_1_id, spec_2_id = msg:match("^(%d+)%s+(%d+)")
+	spec_1_id = tonumber(spec_1_id)
+	spec_2_id = tonumber(spec_2_id)
+
+	if (not is_valid_spec_id(spec_1_id, num_specs)
+		or not is_valid_spec_id(spec_2_id, num_specs)) then
+
+		return print(string.format("%s <spec 1 id> <spec 2 id>", "/ion MoveSpecButtons"))
+	end
+
+	local char_db = _G.IonCDB
+	local profile = get_profile(profile_name)
+
+	for idx, val in ipairs(char_db['buttons']) do 
+			val[spec_2_id] = val[spec_1_id]
+		end
+
+	_G.IonCDB = char_db
+	profile.IonCDB = char_db
+	print("Buttons for layout "..spec_1_id.." copied to layout "..spec_2_id)
+end
+
+
 function ION:CreateBar(index, class, id)
 	local data, show = ION.RegisteredBarData[class]
 
@@ -2003,6 +2044,8 @@ function ION:ToggleButtonGrid(show, hide)
 		btn[1]:SetGrid(show, hide)
 	end
 end
+
+
 
 
 function ION:ToggleMainMenu(show, hide)
@@ -2438,3 +2481,5 @@ function ION.Debug(...)
 	if frame:IsVisible() then debugger:Display() end
 	--@end-debug@
 end
+
+

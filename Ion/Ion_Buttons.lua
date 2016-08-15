@@ -250,12 +250,14 @@ end
 local cou_distance, cou_radius, cou_timer, cou_speed, cou_degree, cou_x, cou_y, cou_position
 
 --Button to cover the world map to keep the macro icon from being overwritten by the default world cursor
+--[[
 local drag_button_canvas = CreateFrame("Button","mybutton",UIParent)
 drag_button_canvas:SetAllPoints()
 drag_button_canvas:SetFrameStrata("LOW")
 drag_button_canvas:SetFrameLevel(0)
 --drag_button_canvas:EnableMouse(false)
 drag_button_canvas:Hide()
+]]--
 
 local function controlOnUpdate(self, elapsed)
 	for i in next,autoCast.timers do
@@ -1782,7 +1784,7 @@ function BUTTON:MACRO_PlaceMacro()
 	end
 
 	MacroDrag[0] = false
-	ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+	ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	self:UpdateFlyout()
 	ION:ToggleButtonGrid(nil, true)
 end
@@ -1823,7 +1825,7 @@ function BUTTON:MACRO_PlaceSpell(action1, action2, spellID, hasAction)
 
 	MacroDrag[0] = false
 
-	ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+	ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 end
 
 
@@ -1849,7 +1851,7 @@ function BUTTON:MACRO_PlaceItem(action1, action2, hasAction)
 	end
 
 	MacroDrag[0] = false
-	ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+	ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 end
 
 
@@ -1884,7 +1886,7 @@ function BUTTON:MACRO_PlaceBlizzMacro(action1)
 
 		MacroDrag[0] = false
 
-		ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+		ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	end
 end
 
@@ -1918,7 +1920,7 @@ function BUTTON:MACRO_PlaceBlizzEquipSet(action1)
 
 		MacroDrag[0] = false
 
-		ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+		ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	end
 end
 
@@ -1982,7 +1984,7 @@ function BUTTON:MACRO_PlaceMount(action1, action2, hasAction)
 		MacroDrag[0] = false
 		CurrentMountSpellID = nil
 
-		ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+		ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	end
 end
 
@@ -2016,7 +2018,7 @@ function BUTTON:MACRO_PlaceCompanion(action1, action2, hasAction)
 
 		MacroDrag[0] = false
 
-		ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+		ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	end
 end
 
@@ -2075,7 +2077,7 @@ function BUTTON:MACRO_PlaceFlyout(action1, action2, hasAction)
 
 		MacroDrag[0] = false
 
-		ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+		ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	end
 end
 
@@ -2103,7 +2105,7 @@ function BUTTON:MACRO_PlaceBattlePet(action1, action2, hasAction)
 
 		MacroDrag[0] = false
 
-		ClearCursor(); SetCursor(nil); drag_button_canvas:Hide()
+		ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	end
 end
 
@@ -2169,7 +2171,7 @@ function BUTTON:MACRO_PickUpMacro()
 
 			local texture_path =GetFileName(MacroDrag.texture)
 			SetCursor(texture_path)
-			drag_button_canvas:Show()
+			--drag_button_canvas:Show()
 		end
 	end
 end

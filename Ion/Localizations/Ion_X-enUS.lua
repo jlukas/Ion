@@ -157,6 +157,8 @@ L.SLASH_CMD46_DESC = "Toggle Ion's Orb Animation"
 L.SLASH_CMD48 = "Debug"
 L.SLASH_CMD48_DESC = "Degutool"
 
+L.SLASH_CMD47 = "MoveSpecButtons"
+L.SLASH_CMD47_DESC = "Copies the buttons from one spec to a second(|cffffff00/ion MoveSpecButtons <Old_Spec#> <New_Spec#>|r)"
 
 L.BARTYPES_USAGE = "Usage: |cffffff00/ion create <type>|r\n"
 L.BARTYPES_TYPES = "     Types -\n"
