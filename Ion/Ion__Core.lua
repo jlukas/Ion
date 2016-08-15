@@ -95,6 +95,7 @@ IonGDB = {
 	betaWarning = true,
 
 	animate = true,
+	showmmb = true,
 }
 
 --CharacterDB?
@@ -266,6 +267,15 @@ local options = {
 					set = function() ION:BlizzBar() end,
 					get = function() return IonGDB.mainbar end,
 					width = "full",
+				},
+				MMbutton = {
+					order = 2,
+					name = "Display Minimap Button",
+					desc = "Toggles the minimap button.",
+					type = "toggle",
+					set =  function() ION:toggleMMB() end,
+					get = function() return IonGDB.showmmb end,
+					width = "full"
 				},
 				--[[
 				DraenorBar = {
@@ -1459,6 +1469,14 @@ function ION:MinimapMenuClose()
 	IonMinimapButton.popup:Hide()
 end
 
+function ION:toggleMMB()
+	if IonGDB.showmmb then
+		IonMinimapButton:Hide()
+	else
+		IonMinimapButton:Show()
+	end
+	IonGDB.showmmb = not IonGDB.showmmb
+end
 
 function ION.SubFramePlainBackdrop_OnLoad(self)
 	self:SetBackdrop({
@@ -2236,6 +2254,9 @@ local function control_OnEvent(self, event, ...)
 		--Fix for Titan causing the Main Bar to not be hidden
 		if (IsAddOnLoaded("Titan")) then TitanUtils_AddonAdjust("MainMenuBar", true) end
 		ION:ToggleBlizzBar(GDB.mainbar)
+		if not GDB.showmmb then
+			IonMinimapButton:Hide()
+		end
 
 		CDB.fix07312012 = true
 
