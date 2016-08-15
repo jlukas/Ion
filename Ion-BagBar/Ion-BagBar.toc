@@ -2,7 +2,7 @@
 ## Title: Ion: Bag Bar
 ## Author: Maul
 ## X-Credits-Maintainer: SLOKnightfall
-## Version: Helium  2.0 - Legion Beta Build
+## Version: Helium  2.0.1 - Legion Release
 ## Notes: Bag bar for Ion
 ## DefaultState: enabled
 ## Dependencies: Ion
