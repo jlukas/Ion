@@ -3124,6 +3124,10 @@ function BUTTON:SetType(save, kill, init)
 		self:SetAttribute("vehicleID_Offset", 132)
 		self:SetAttribute("vehicleExit_Macro", "/click OverrideActionBarLeaveFrameLeaveButton")
 		self:SetAttribute("possessExit_Macro", "/click PossessButton2")
+		self:SetAttribute("overrideID_shift", self.bar.gdata.overrideID_shift)
+		self:SetAttribute("vehicleShowExit", self.bar.gdata.vehicleShowExit)
+		self:SetAttribute("possessShowExit", self.bar.gdata.possessShowExit)
+		self:SetAttribute("overrideShowExit", self.bar.gdata.overrideShowExit)
 
 		self:SetAttribute("_childupdate", [[
 
@@ -3137,7 +3141,7 @@ function BUTTON:SetType(save, kill, init)
 
 						else
 
-							if (self:GetAttribute("lastPos")) then
+							if (self:GetAttribute("vehicleShowExit") and self:GetAttribute("lastPos")) then
 
 								self:SetAttribute("type", "macro")
 
@@ -3160,14 +3164,14 @@ function BUTTON:SetType(save, kill, init)
 						if (self:GetAttribute(msg.."-actionID")) then
 
 						else
-							if (self:GetAttribute("lastPos")) then
+							if (self:GetAttribute("possessShowExit") and self:GetAttribute("lastPos")) then
 								self:SetAttribute("type", "macro")
 								self:SetAttribute("*macrotext*", self:GetAttribute("possessExit_Macro"))
 								self:SetAttribute("*action*", 0)
 
 							else
 								self:SetAttribute("type", "action")
-								self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("vehicleID_Offset"))
+								self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_shift")+self:GetAttribute("vehicleID_Offset"))
 							end
 						end
 
@@ -3179,22 +3183,22 @@ function BUTTON:SetType(save, kill, init)
 						if (self:GetAttribute(msg.."-actionID")) then
 						else
 
-							--if (self:GetAttribute("lastPos")) then
+							if (self:GetAttribute("overrideShowExit") and self:GetAttribute("lastPos")) then
 
-							--	self:SetAttribute("type", "macro")
+								self:SetAttribute("type", "macro")
 
-							--	self:SetAttribute("*macrotext*", self:GetAttribute("vehicleExit_Macro"))
+								self:SetAttribute("*macrotext*", self:GetAttribute("vehicleExit_Macro"))
 
-							--	self:SetAttribute("*action*", 0)
+								self:SetAttribute("*action*", 0)
 
-							--else
+							else
 
 								self:SetAttribute("type", "action")
 
-								self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_Offset"))
+								self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_shift")+self:GetAttribute("overrideID_Offset"))
 
 								self:SetAttribute("HasActionID", true)
-							--end
+							end
 						end
 
 						self:SetAttribute("SpecialAction", "override")
@@ -3258,7 +3262,7 @@ function BUTTON:SetFauxState(state)
 					self:SetAttribute("*action*", 0)
 				else
 					self:SetAttribute("type", "action")
-					self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("vehicleID_Offset"))
+					self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_shift")+self:GetAttribute("vehicleID_Offset"))
 					self:SetAttribute("HasActionID", true)
 				end
 			end
@@ -3274,7 +3278,7 @@ function BUTTON:SetFauxState(state)
 
 				else
 					self:SetAttribute("type", "action")
-					self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("vehicleID_Offset"))
+					self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_shift")+self:GetAttribute("vehicleID_Offset"))
 					self:SetAttribute("HasActionID", true)
 				end
 			end
@@ -3297,7 +3301,7 @@ function BUTTON:SetFauxState(state)
 
 					self:SetAttribute("type", "action")
 
-					self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_Offset"))
+					self:SetAttribute("*action*", self:GetAttribute("barPos")+self:GetAttribute("overrideID_shift")+self:GetAttribute("overrideID_Offset"))
 
 					self:SetAttribute("HasActionID", true)
 				--end

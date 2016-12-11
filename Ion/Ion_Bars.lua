@@ -91,6 +91,11 @@ ION.barGDEF = {
 	debuffcolor = "0.8;0;0;1",
 	rangecolor = "0.7;0.15;0.15;1",
 	border = true,
+
+	overrideID_shift = 0,
+	vehicleShowExit = true,
+	possessShowExit = true,
+	overrideShowExit = false,
 }
 
 
