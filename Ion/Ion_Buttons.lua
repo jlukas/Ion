@@ -391,7 +391,7 @@ local function controlOnUpdate(self, elapsed)
 
 	if (MacroDrag[0]) then
 		local texture_path =GetFileName(MacroDrag.texture)
-		SetCursor(texture_path)
+		--SetCursor(texture_path)
 	end
 end
 
@@ -544,16 +544,15 @@ end
 
 local function checkCursor(self, button)
 	if (MacroDrag[0]) then
-
 		if (button == "LeftButton" or button == "RightButton") then
-
 			MacroDrag[0] = false; SetCursor(nil); PlaySound("igSpellBookSpellIconDrop")
 
 			ION:ToggleButtonGrid(nil, true)
+			DeleteMacro("IonTemp")
 		else
 
 			local texture_path =GetFileName(MacroDrag.texture)
-			SetCursor(texture_path)
+			--SetCursor(texture_path)
 
 			ION:ToggleButtonGrid(true)
 		end
@@ -605,6 +604,7 @@ function BUTTON:MACRO_HasAction()
 	if (self.actionID) then
 		if (self.actionID == 0) then
 			return true
+
 		else
 			return HasAction(self.actionID)
 		end
@@ -626,7 +626,6 @@ local ud_spell, ud_spellcmd, ud_show, ud_showcmd, ud_cd, ud_cdcmd, ud_aura, ud_a
 
 function BUTTON:MACRO_UpdateData(...)
 	if (self.macroparse) then
-
 		ud_spell, ud_spellcmd, ud_show, ud_showcmd, ud_cd, ud_cdcmd, ud_aura, ud_auracmd, ud_item, ud_target, ud__ = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
 
 		for cmd, options in gmatch(self.macroparse, "(%c%p%a+)(%C+)") do
@@ -751,9 +750,7 @@ function BUTTON:MACRO_SetSpellIcon(spell)
 	if (not self.data.macro_Watch and not self.data.macro_Equip) then
 
 		spell = (spell):lower()
-
 		if (sIndex[spell]) then
-
 			local spell_id = sIndex[spell].spellID
 
 			if (morphSpells[spell_id]) then
@@ -763,7 +760,6 @@ function BUTTON:MACRO_SetSpellIcon(spell)
 			end
 
 		elseif (cIndex[spell]) then
-
 			texture = cIndex[spell].icon
 
 		elseif (spell) then
@@ -789,7 +785,6 @@ function BUTTON:MACRO_SetSpellIcon(spell)
 
 	else
 		if (self.data.macro_Watch) then
-
 			--for i=1,select("#",GetMacroInfo(self.data.macro_Watch)) do
 			--	print(select(i,GetMacroInfo(self.data.macro_Watch)))
 			--end
@@ -830,11 +825,18 @@ function BUTTON:MACRO_SetItemIcon(item)
 	else
 		self.border:Hide()
 	end
+Icon_Overwrite = false
 
-	if (not self.data.macro_Icon) then
+	--There is stored icon and dont want to updtee icon on fly
+	if (((type(self.data.macro_Icon) == "string" and #self.data.macro_Icon > 0) or type(self.data.macro_Icon) == "number" ) and Icon_Overwrite) then
+		if (self.data.macro_Icon == "BLANK") then
+			self.iconframeicon:SetTexture("")
+		else
+			self.iconframeicon:SetTexture(self.data.macro_Icon)
+		end
 
+	else
 		_, link, _, _, _, _, _, _, _, texture = GetItemInfo(item)
-
 		if (link) then
 
 			_, itemID = link:match("(item:)(%d+)")
@@ -856,17 +858,6 @@ function BUTTON:MACRO_SetItemIcon(item)
 		else
 			self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 		end
-
-	elseif (type(self.data.macro_Icon) == "string" and #self.data.macro_Icon > 0) then
-
-		if (self.data.macro_Icon == "BLANK") then
-			self.iconframeicon:SetTexture("")
-		else
-			self.iconframeicon:SetTexture(self.data.macro_Icon)
-		end
-	else
-
-		self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 	end
 
 	self.iconframeicon:Show()
@@ -891,7 +882,6 @@ function BUTTON:ACTION_SetIcon(action)
 
 		else
 			self.macroname:SetText(GetActionText(actionID))
-
 			if (HasAction(actionID)) then
 				self.iconframeicon:SetTexture(GetActionTexture(actionID))
 			else
@@ -912,7 +902,7 @@ end
 function BUTTON:MACRO_UpdateIcon(...)
 
 	self.updateMacroIcon = nil
-
+	self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 	local spell, item, show, texture = self.macrospell, self.macroitem, self.macroshow, self.macroicon
 --print(spell)
 --print(item)
@@ -1064,7 +1054,6 @@ function BUTTON:MACRO_SetItemState(item)
 	else
 		self:SetChecked(nil)
 	end
-
 	self.macroname:SetText(self.data.macro_Name)
 end
 
@@ -1100,7 +1089,6 @@ function BUTTON:MACRO_UpdateState(...)
 	local spell, item, show = self.macrospell, self.macroitem, self.macroshow
 
 	if (self.actionID) then
-
 		self:ACTION_UpdateState(self.actionID)
 
 	elseif (show and #show>0) then
@@ -1787,6 +1775,8 @@ function BUTTON:MACRO_PlaceMacro()
 	ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 	self:UpdateFlyout()
 	ION:ToggleButtonGrid(nil, true)
+	DeleteMacro("IonTemp")
+
 end
 
 
@@ -1813,7 +1803,7 @@ function BUTTON:MACRO_PlaceSpell(action1, action2, spellID, hasAction)
 	end
 
 	self.data.macro_Icon = false
-	self.data.macro_Name = ""
+	self.data.macro_Name = spellInfoName
 	self.data.macro_Watch = false
 	self.data.macro_Equip = false
 	self.data.macro_Note = ""
@@ -1826,6 +1816,7 @@ function BUTTON:MACRO_PlaceSpell(action1, action2, spellID, hasAction)
 	MacroDrag[0] = false
 
 	ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
+
 end
 
 
@@ -1839,7 +1830,7 @@ function BUTTON:MACRO_PlaceItem(action1, action2, hasAction)
 	end
 
 	self.data.macro_Icon = false
-	self.data.macro_Name = ""
+	self.data.macro_Name = item
 	self.data.macro_Auto = false
 	self.data.macro_Watch = false
 	self.data.macro_Equip = false
@@ -1849,7 +1840,6 @@ function BUTTON:MACRO_PlaceItem(action1, action2, hasAction)
 	if (not self.cursor) then
 		self:SetType(true)
 	end
-
 	MacroDrag[0] = false
 	ClearCursor(); SetCursor(nil); --drag_button_canvas:Hide()
 end
@@ -1998,15 +1988,16 @@ function BUTTON:MACRO_PlaceCompanion(action1, action2, hasAction)
 		local name = GetSpellInfo(spellID)
 
 		if (name) then
+			self.data.macro_Name = name
 			self.data.macro_Text = self:AutoWriteMacro(name)
 			self.data.macro_Auto = name
 		else
+			self.data.macro_Name = ""
 			self.data.macro_Text = ""
 			self.data.macro_Auto = false
 		end
 
 		self.data.macro_Icon = false
-		self.data.macro_Name = ""
 		self.data.macro_Watch = false
 		self.data.macro_Equip = false
 		self.data.macro_Note = ""
@@ -2109,6 +2100,25 @@ function BUTTON:MACRO_PlaceBattlePet(action1, action2, hasAction)
 	end
 end
 
+ --Workarround to getting icos to show when ourside of a ion frame.  Bascialy creates a blank 
+ --macro, sets its icon to what what picked up, and have the cursor pick up the macro. The temp 
+ --macro is then deleted when the item is placed.
+local macroIndex = nil
+local function macroFuss(MacroDrag)
+
+	if MacroDrag[6] then
+		PickupMacro(MacroDrag[6])
+	else
+		macroExists = GetMacroInfo("IonTemp")
+		if macroExists then
+			macroIndex = EditMacro(macroIndex, "IonTemp", MacroDrag.texture, "")
+		else
+			macroIndex = CreateMacro("IonTemp", MacroDrag.texture, "")
+		end
+		PickupMacro("IonTemp")
+		MacroDrag[0] = "macro"
+	end
+end
 
 function BUTTON:MACRO_PickUpMacro()
 	local pickup = nil
@@ -2127,7 +2137,7 @@ function BUTTON:MACRO_PickUpMacro()
 		local texture, move = self.iconframeicon:GetTexture()
 		wipe(MacroDrag)
 
-		if (currMacro[0]) then
+		if (currMacro[0]) then  --triggers when picking up an existing button with a button in the cursonr
 
 			for k,v in pairs(currMacro) do
 				MacroDrag[k] = v
@@ -2135,7 +2145,8 @@ function BUTTON:MACRO_PickUpMacro()
 
 			wipe(currMacro)
 			local texture_path =GetFileName(MacroDrag.texture)
-			SetCursor(texture_path)
+			macroFuss(MacroDrag)
+			--SetCursor(texture_path)
 
 		elseif (self:MACRO_HasAction()) then
 			MacroDrag[0] = self:MACRO_GetDragAction()
@@ -2149,7 +2160,6 @@ function BUTTON:MACRO_PickUpMacro()
 			MacroDrag[8] = self.data.macro_Note
 			MacroDrag[9] = self.data.macro_UseNote
 			MacroDrag.texture = texture
-
 			self.data.macro_Text = ""
 			self.data.macro_Icon = false
 			self.data.macro_Name = ""
@@ -2169,10 +2179,10 @@ function BUTTON:MACRO_PickUpMacro()
 
 			self:SetType(true)
 
-			local texture_path =GetFileName(MacroDrag.texture)
-			SetCursor(texture_path)
-			--drag_button_canvas:Show()
+			macroFuss(MacroDrag)
+
 		end
+			
 	end
 end
 
@@ -2189,7 +2199,6 @@ function BUTTON:MACRO_OnReceiveDrag(preclick)
 	local texture = self.iconframeicon:GetTexture()
 
 	if (self:MACRO_HasAction()) then
-
 		wipe(currMacro)
 
 		currMacro[0] = self:MACRO_GetDragAction()
@@ -2211,9 +2220,7 @@ function BUTTON:MACRO_OnReceiveDrag(preclick)
 	else
 
 		if (MacroDrag[0]) then
-
 			self:MACRO_PlaceMacro(); PlaySound("igSpellBookSpellIconDrop")
-
 		elseif (cursorType == "spell") then
 			self:MACRO_PlaceSpell(action1, action2, spellID, self:MACRO_HasAction())
 
@@ -2222,7 +2229,6 @@ function BUTTON:MACRO_OnReceiveDrag(preclick)
 
 		elseif (cursorType == "macro") then
 			self:MACRO_PlaceBlizzMacro(action1)
-
 		elseif (cursorType == "equipmentset") then
 			self:MACRO_PlaceBlizzEquipSet(action1)
 
@@ -2235,7 +2241,7 @@ function BUTTON:MACRO_OnReceiveDrag(preclick)
 		elseif (cursorType == "battlepet") then
 			self:MACRO_PlaceBattlePet(action1, action2, self:MACRO_HasAction())
 		end
-
+		DeleteMacro("IonTemp")
 		--self:MACRO_SetTooltip()
 	end
 
@@ -3608,6 +3614,8 @@ local function controlOnEvent(self, event, ...)
 			["/equipslot"] = true,
 			["/use"] = true,
 			["/userandom"] = true,
+			["/summonpet"] = true,
+			["/click"] = true,
 		}
 
 		ION.AutoCastStart = AutoCastStart

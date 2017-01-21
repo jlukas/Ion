@@ -211,7 +211,7 @@ function ION:ToggleEditFrames(show, hide)
 			IonObjectEditor:Hide()
 		end
 
-		collectgarbage()
+		--collectgarbage()
 
 	else
 
