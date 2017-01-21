@@ -1130,6 +1130,6 @@ frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 hooksecurefunc("MainMenuMicroButton_ShowAlert", ION.MainMenuMicroButton_ShowAlert)
 
 -- Forces the default alert frames to auto hide if something tries to show them
-TalentMicroButtonAlert:SetScript("OnShow", function(self) self:Hide() end)
-CollectionsMicroButtonAlert:SetScript("OnShow", function(self) self:Hide() end)
-EJMicroButtonAlert:SetScript("OnShow", function(self) self:Hide() end)
+TalentMicroButtonAlert:SetScript("OnShow", function() end)
+CollectionsMicroButtonAlert:SetScript("OnShow", function()  end)
+EJMicroButtonAlert:SetScript("OnShow", function() end)
