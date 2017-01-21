@@ -1,8 +1,8 @@
-## Interface: 70000
+## Interface: 70100
 ## Title: Ion: Menu Bar
 ## Author: Maul
 ## X-Credits-Maintainer: SLOKnightfall
-## Version: Helium  2.0.1 - Legion Release
+## Version: Helium  2.0.2 - Legion Release
 ## Notes: Menu bar for Ion
 ## DefaultState: enabled
 ## Dependencies: Ion
