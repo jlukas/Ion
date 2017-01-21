@@ -301,12 +301,13 @@ end
 
 --These factions return fID but have 8 levels instead of 6
 local BrawlerGuildFactions = {
+[1691] = true, --Aliance Legion needs verification
 [1691] = true, --Aliance WoD
 [1419] = true, --Aliance MoP
+[2010] = true, --Horde Legion  needs verification
 [1690] = true, --Horde WoD
 [1374] = true, --Horde MoP
 }
-
 
 --- Creates a table containing provided data
 -- @param name, hasFriendStatus, standing, minrep, maxrep, value, colors
@@ -332,6 +333,7 @@ local reptable = {}
 	end
 	return reptable
 end
+
 
 local function repstrings_Update(line)
 
