@@ -909,7 +909,10 @@ function ION:UpdateToyData()
 	for i=1,C_ToyBox.GetNumFilteredToys() do
 		local itemID = C_ToyBox.GetToyFromIndex(i)
 		local name = GetItemInfo(itemID) or "UNKNOWN"
-		ION.tIndex[name:lower()] = itemID
+		local known = PlayerHasToy(itemID)
+		if known then 
+			ION.tIndex[name:lower()] = itemID
+		end
 	end
 
 	-- restore filters
@@ -2321,7 +2324,7 @@ local function control_OnEvent(self, event, ...)
 		updater:Show()
 
 	elseif (event == "PET_UI_CLOSE" or event == "COMPANION_LEARNED" or event == "COMPANION_UPDATE" or event =="PET_JOURNAL_LIST_UPDATE") then
-		if not CollectionsJournal or not CollectionsJournal:IsShown() then ION:UpdateCompanionData() end
+		if not CollectionsJournal or not CollectionsJournal:IsShown() then ION:UpdateCompanionData()end
 	elseif (event == "UNIT_PET" and ... == "player") then
 
 		if (PEW) then

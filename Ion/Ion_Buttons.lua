@@ -902,7 +902,7 @@ end
 function BUTTON:MACRO_UpdateIcon(...)
 
 	self.updateMacroIcon = nil
-	self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
+self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 	local spell, item, show, texture = self.macrospell, self.macroitem, self.macroshow, self.macroicon
 --print(spell)
 --print(item)
@@ -1661,6 +1661,10 @@ function BUTTON:MACRO_PLAYER_ENTERING_WORLD(...)
 	self.binder:ApplyBindings(self)
 end
 
+function BUTTON:MACRO_PET_JOURNAL_LIST_UPDATE(...)
+	self:MACRO_UpdateAll(true)
+end
+
 
 function BUTTON:MACRO_MODIFIER_STATE_CHANGED(...)
 	self:MACRO_UpdateAll(true)
@@ -2401,7 +2405,7 @@ function BUTTON:MACRO_SetSpellTooltip(spell)
 
 	elseif (cIndex[spell]) then
 
-		if (self.UberTooltips) then
+		if (self.UberTooltips and cIndex[spell].creatureType =="MOUNT") then
 			GameTooltip:SetHyperlink("spell:"..cIndex[spell].spellID)
 		else
 			GameTooltip:SetText(cIndex[spell].creatureName, 1, 1, 1)
@@ -2589,6 +2593,9 @@ function BUTTON:MACRO_OnShow(...)
 	self:RegisterEvent("UPDATE_OVERRIDE_ACTIONBAR")
 	self:RegisterEvent("UPDATE_EXTRA_ACTIONBAR")
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
+
+	self:RegisterEvent("PET_JOURNAL_LIST_UPDATE")
+	
 end
 
 
@@ -2644,6 +2651,8 @@ function BUTTON:MACRO_OnHide(...)
 	self:UnregisterEvent("UPDATE_OVERRIDE_ACTIONBAR")
 	self:UnregisterEvent("UPDATE_EXTRA_ACTIONBAR")
 	self:UnregisterEvent("UPDATE_BONUS_ACTIONBAR")
+	self:UnregisterEvent("PET_JOURNAL_LIST_UPDATE")
+
 end
 
 

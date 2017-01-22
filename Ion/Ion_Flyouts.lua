@@ -677,16 +677,17 @@ function BUTTON:Flyout_UpdateButtons(init)
 					prefix = "/cast "
 
 				elseif (source == "companion") then
-					button.macroshow = ""
-					button.macroicon = petIcons[spell]
+					button.macroshow = spell
+					--button.macroicon = petIcons[spell]
 					button:SetAttribute("prefix", "/summonpet ")
-					button:SetAttribute("showtooltip", "")
-					button.data.macro_Icon = petIcons[spell]
-					button.data.macro_Name = spell
-					button:SetAttribute("macro_Icon", petIcons[spell])
-					button:SetAttribute("macro_Name", spell)
+					--button:SetAttribute("showtooltip", "")
+					button:SetAttribute("showtooltip", "#showtooltip "..button.macroshow.."\n")
+					--button.data.macro_Icon = petIcons[spell]
+					--button.data.macro_Name = spell
+					--button:SetAttribute("macro_Icon", petIcons[spell])
+					--button:SetAttribute("macro_Name", spell)
 					prefix = "/summonpet "
-					pet = spell
+					--pet = spell
 
 				elseif (source == "item") then
 					button.macroshow = spell

@@ -2110,6 +2110,29 @@ function ION:TargetOptions_OnLoad(frame)
 	IonBarEditor.ACEmenu = widget
 	AceGUI:RegisterAsContainer(widget)
 	ION.SubFrameHoneycombBackdrop_OnLoad(frame)
+end
+
+-- OnLoad event for Bar editor Spell Target Options frame
+function ION:FlyoutOptions_OnLoad(frame)
+--IonButtonEditor.options
+	--Container Support
+	local content = CreateFrame("Frame",nil, IonButtonEditor.options)
+	content:SetPoint("TOPLEFT",10,-5 )
+	content:SetPoint("BOTTOMRIGHT",-10,5)
+	--This creats a cusomt AceGUI container which lets us imbed a AceGUI menu into our frame.
+	local widget = {
+		frame     = IonButtonEditor.options,
+		content   = content,
+		type      = "IonContainer"
+	}
+	widget["OnRelease"] = function(self)
+		self.status = nil
+		wipe(self.localstatus)
+	end
+	
+	IonButtonEditor.ACEmenu = widget
+	AceGUI:RegisterAsContainer(widget)
+	--ION.SubFrameHoneycombBackdrop_OnLoad(frame)
 
 end
 
@@ -2756,7 +2779,7 @@ local function customPathOnShow(self)
 	if (button) then
 
 		if (button.data.macro_Icon) then
-
+--Needs fixing
 			local text = button.data.macro_Icon:gsub("INTERFACE\\", "")
 
 			self:SetText(text)
@@ -3206,12 +3229,44 @@ function ION:ButtonEditor_OnLoad(frame)
 	frame.action = f
 
 	f = CreateFrame("Frame", nil, frame)
-	f:SetPoint("TOPLEFT", frame.actionlist, "TOPRIGHT", 10, -10)
+	f:SetPoint("TOPLEFT", frame.actionlist, "TOPRIGHT", 10, -25)
 	f:SetPoint("BOTTOMRIGHT", -10, 10)
 	f:SetScript("OnUpdate", function(self,elapsed) if (self.elapsed == 0) then ION:UpdateObjectGUI(true) end self.elapsed = elapsed end)
+	f:SetScript("OnShow", function(self) LibStub("AceConfigDialog-3.0"):Open(addonName, IBTNE.ACEmenu , "flyoutoptions") end)
 	f:Hide()
 	f.elapsed = 0
 	frame.options = f
+	
+---  /flyout <types>:<keys>:<shape>:<attach point>:<relative point>:<columns|radius>:<click|mouse>
+--[[
+	f = CreateFrame("EditBox", nil, frame.options)
+	f:SetMultiLine(false)
+	f:SetNumeric(false)
+	f:SetAutoFocus(false)
+	f:SetTextInsets(5,5,5,5)
+	f:SetFontObject("GameFontHighlight")
+	f:SetJustifyH("CENTER")
+	f:SetPoint("TOPLEFT", frame.options, "TOPRIGHT", 5, 3.5)
+	f:SetPoint("BOTTOMRIGHT", frame.options, "TOP", -18, 32)
+	--f:SetScript("OnTextChanged", macroNameEdit_OnTextChanged)
+	f:SetScript("OnEditFocusGained", function(self) self.text:Hide() self.hasfocus = true end)
+	---f:SetScript("OnEditFocusLost", function(self) if (strlen(self:GetText()) < 1) then self.text:Show() end macroOnEditFocusLost(self) end)
+	f:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+	f:SetScript("OnTabPressed", function(self) self:ClearFocus() end)
+	frame.flyoutKey = f
+
+	f.text = f:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+	f.text:SetPoint("CENTER")
+	f.text:SetJustifyH("CENTER")
+	f.text:SetText("dsfgdfgsdf")
+
+	f = CreateFrame("Frame", nil, frame.flyoutkey)
+	f:SetPoint("TOPLEFT", 0, 0)
+	f:SetPoint("BOTTOMRIGHT", 0, 0)
+	f:SetFrameLevel(frame.flyoutKey:GetFrameLevel()-1)
+
+	ION.SubFrameBlackBackdrop_OnLoad(f)
+]]--
 
 	local function TabsOnClick(cTab, silent)
 
@@ -3385,6 +3440,22 @@ local function controlOnEvent(self, event, ...)
 			hookMountButtons(); hookPetJournalButtons()
 		end
 
+	local content = CreateFrame("Frame",nil, IBTNE.options)
+	content:SetPoint("TOPLEFT",10,-5 )
+	content:SetPoint("BOTTOMRIGHT",-10,5)
+	--This creats a cusomt AceGUI container which lets us imbed a AceGUI menu into our frame.
+	local widget = {
+		frame     = IBTNE.options,
+		content   = content,
+		type      = "IonContainer"
+	}
+	widget["OnRelease"] = function(self)
+		self.status = nil
+		wipe(self.localstatus)
+	end
+	IonButtonEditor.ACEmenu = widget
+	AceGUI:RegisterAsContainer(widget)
+
 	elseif (event == "ADDON_LOADED" and ... == "Blizzard_PetJournal") then
 
 		hookMountButtons()
@@ -3420,6 +3491,56 @@ local function SetBarCastTarget(value, toggle)
 		if Ion.CurrentBar then 
 		Ion.CurrentBar:SetCastingTarget(value, true, toggle)
 	end
+end
+
+--/flyout s+,i+:teleport,!drake:linear:top:bottom:1:click
+local FLYOUTMACRO = {
+	["types"] = {
+	["item"] = "item"},
+	["keys"] = "",
+	["shape"] = "LINEAR",
+	["attach"] = "TOP",
+	["relative"] = "BOTTOM",
+	["columns"] = 3,
+	["mouse"] = "CLICK",
+}
+
+local flyouttypes = {}
+local function flyoutsetter(info, value)
+	FLYOUTMACRO[info[#info]]= value
+end
+
+local function flyouttypesetter(info, value)
+	if value then
+		FLYOUTMACRO["types"][info[#info]]= value
+		--print(info[#info])
+	else
+		FLYOUTMACRO["types"][info[#info]] = nil
+	end
+end
+
+local function flyouttypegitter(info)
+	return FLYOUTMACRO["types"][info[#info]]
+end
+
+local function flyoutgetter(info)
+--print(FLYOUTMACRO[info[#info]])
+ return FLYOUTMACRO[info[#info]]
+
+end
+local finalmacro = ""
+local function createflyoutmacro()
+local macrotypes = ""
+for name,value in pairs(FLYOUTMACRO["types"]) do
+	macrotypes = macrotypes..","..name
+end
+
+--local macrotypes = "test"--FLYOUTMACRO["item"],
+finalmacro = "/flyout "..macrotypes..":"..FLYOUTMACRO["keys"]..":"..FLYOUTMACRO["shape"]..":"..FLYOUTMACRO["attach"]..":"..FLYOUTMACRO["relative"]..":"..FLYOUTMACRO["buttons"]..":"..FLYOUTMACRO["mouse"]
+
+print(finalmacro)
+
+
 end
 
 
@@ -3511,6 +3632,171 @@ local target_options = {
 					order = 302,
 					type = "description",
 					name = "\n" .. L.SPELL_TARGETING_MODIFIER_NONE_REMINDER,
+				},
+			},
+		},
+
+		flyoutoptions={
+			name = "Options",
+			type = "group",
+			args={
+				item = {
+					order = 10,
+					type = "toggle",
+					name = "Item",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+					--values = { ITEM = "Item", SPELL = "Spell", MOUNT = "Mount", COMPANION="Companion", TYPE = "Type", PROFESSION= "Profession", FUN = "Fun", FAVORITE = "Favorite" },
+				},
+				spell = {
+					order = 10,
+					type = "toggle",
+					name = "Spell",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				mount = {
+					order = 10,
+					type = "toggle",
+					name = "Mount",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				companion = {
+					order = 10,
+					type = "toggle",
+					name = " Companion",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				types = {
+					order = 10,
+					type = "toggle",
+					name = "Type",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				profession = {
+					order = 10,
+					type = "toggle",
+					name = "Profession",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				fun = {
+					order = 10,
+					type = "toggle",
+					name = "Fun",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				favoriate = {
+					order = 10,
+					type = "toggle",
+					name = "Favoriates",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyouttypegitter(info) end, --getFunc,
+					set = function(info, value) flyouttypesetter(info, value) end,
+				},
+				--types = {
+					--order = 10,
+					--type = "multiselect",
+					--name = "Flyout Types",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--get = function(info)  return settingGetter(info) end, --getFunc,
+					--set = function(info, value) print(value) end,
+					--values = { ITEM = "Item", SPELL = "Spell", MOUNT = "Mount", COMPANION="Companion", TYPE = "Type", PROFESSION= "Profession", FUN = "Fun", FAVORITE = "Favorite" },
+				--},
+				keys = {
+					order = 11,
+					type = "input",
+					name = "Keys",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyoutgetter(info) end, --getFunc,
+					set = function(info, value) flyoutsetter(info, value) end,
+				},
+				shape = {
+					order = 12,
+					type = "select",
+					name = "Shape",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyoutgetter(info) end, --getFunc,
+					set = function(info, value) flyoutsetter(info, value) end,
+					values = { LINEAR = "Linear", CIRCULAR = "Circular" },
+				},
+				attach = {
+					order = 13,
+					type = "select",
+					name = "Attach Point",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyoutgetter(info) end, --getFunc,
+					set = function(info, value) flyoutsetter(info, value) end,
+					values = { LEFT = "left", RIGHT = "right",TOP = "top", BOTTOM = "bottom",TOPLEFT = "topleft", TOPRIGHT = "topright",BOTTOMLEFT = "bottomleft", BOTTOMRIGHT = "BottomRight", CENTER = "Center" },
+				},
+				relative = {
+					order = 14,
+					type = "select",
+					name = "Relative to",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyoutgetter(info) end, --getFunc,
+					set = function(info, value) flyoutsetter(info, value) end,
+					values = { LEFT = "left", RIGHT = "right",TOP = "top", BOTTOM = "bottom",TOPLEFT = "topleft", TOPRIGHT = "topright",BOTTOMLEFT = "bottomleft", BOTTOMRIGHT = "BottomRight", CENTER = "Center" },
+				},
+				columns = {
+					order = 15,
+					type = "range",
+					name = "Columns/Radius",
+					min = -25,
+					max = 25,
+					step = 1,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  print(flyoutgetter(info));return flyoutgetter(info) end, --getFunc,
+					set = function(info, value) flyoutsetter(info, value) end,
+				},
+				mouse = {
+					order = 16,
+					type = "select",
+					name = "Show on Click",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info)  return flyoutgetter(info) end, --getFunc,
+					set = function(info, value) flyoutsetter(info, value) end,
+					values = { CLICK = "Click", MOUSE = "Mouse" },
+
+				},
+				generate = {
+					order = 17,
+					type = "execute",
+					name = "Save",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					func = function() createflyoutmacro() end,
+				},
+				output = {
+					order = 18,
+					type = "input",
+					name = "output",
+					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
+					get = function(info) return finalmacro end,
+					width = "full"
 				},
 			},
 		},
