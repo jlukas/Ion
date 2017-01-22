@@ -450,6 +450,7 @@ local defaults = {
 			betaWarning = true,
 
 			animate = true,
+			showmmb = true,
 		},
 		IonCDB = {
 
@@ -1471,7 +1472,7 @@ function ION:MinimapMenuClose()
 end
 
 function ION:toggleMMB()
-	if IonGDB.showmmb then
+	if not IonGDB.showmmb then
 		IonMinimapButton:Hide()
 	else
 		IonMinimapButton:Show()

@@ -3551,7 +3551,7 @@ for name,value in pairs(FLYOUTMACRO["types"]) do
 end
 
 --local macrotypes = "test"--FLYOUTMACRO["item"],
-finalmacro = "/flyout "..macrotypes..":"..FLYOUTMACRO["keys"]..":"..FLYOUTMACRO["shape"]..":"..FLYOUTMACRO["attach"]..":"..FLYOUTMACRO["relative"]..":"..FLYOUTMACRO["buttons"]..":"..FLYOUTMACRO["mouse"]
+finalmacro = "/flyout "..macrotypes..":"..FLYOUTMACRO["keys"]..":"..FLYOUTMACRO["shape"]..":"..FLYOUTMACRO["attach"]..":"..FLYOUTMACRO["relative"]..":"..FLYOUTMACRO["columns"]..":"..FLYOUTMACRO["mouse"]
 
 print(finalmacro)
 

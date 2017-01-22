@@ -1207,6 +1207,8 @@ function BAR:SetPerimeter()
 			local objTop, objBottom, objLeft, objRight = object:GetTop(), object:GetBottom(), object:GetLeft(), object:GetRight()
 			local scale = 1
 
+if not objTop then return end
+
 			self.objectCount = self.objectCount + 1
 
 			if (self.top) then

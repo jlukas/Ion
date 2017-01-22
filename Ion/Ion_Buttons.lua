@@ -962,6 +962,7 @@ self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 		self.iconframeicon:Show()
 
 	else
+		self.macroname:SetText("")
 		self.iconframeicon:SetTexture("")
 		self.iconframeicon:Hide()
 		self.border:Hide()
