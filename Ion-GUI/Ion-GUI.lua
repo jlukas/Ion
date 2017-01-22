@@ -1640,7 +1640,12 @@ function ION:ActionEditor_OnLoad(frame)
 			f:SetWidth(18)
 			f:SetHeight(18)
 			f:SetScript("OnClick", setBarActionState)
-			f.text:SetText(L["GUI_"..state:upper()])
+			--Renames Stance for rogues to Stealth as that is what shoudl really be used 
+			if state == "stance" and (ION.class == "ROGUE") then
+				f.text:SetText(L["STEALTH1"])
+			else
+				f.text:SetText(L["GUI_"..state:upper()])
+			end
 			f.option = state
 
 			if (not anchor) then
@@ -1901,7 +1906,12 @@ function ION.VisEditorScrollFrameUpdate(frame, tableList, alt)
 		local val = k:match("%d+$")
 
 		if (val and (k ~= "custom0"))then
-			data[count] = k; count = count + 1
+			--Messy workaround to not have 2 stealths for rogues
+			if ((k == "stealth0" or k == "stealth1") and (ION.class == "ROGUE")) then
+
+			else
+				data[count] = k; count = count + 1
+			end
 		end
 	end
 	
@@ -1930,6 +1940,7 @@ local customStateData = {}
 		count = dataOffset + i
 
 		if (data[count]) then
+
 			text = ION.STATES[data[count]] or data[count]
 
 			if customStateData[data[count]] then 
@@ -1938,6 +1949,11 @@ local customStateData = {}
 			else
 			button.msg = data[count]:match("%a+").." "..data[count]:match("%d+$")
 			button:SetChecked(not bar.gdata.hidestates:find(data[count]))
+			end
+
+			--Renames rogues stance0 from Melee to No stealth for the view states list
+			if (data[count] == "stance0"  and ION.class == "ROGUE") then
+				text = L.STEALTH0
 			end
 
 			button.text:SetText(text)
@@ -2036,8 +2052,7 @@ function ION.SecondaryPresetsScrollFrameUpdate(frame, tableList, alt)
 
 	for k in pairs(tableList) do
 
-		if (not MAS[k].homestate and (k ~= "prowl") and (k ~= "extrabar") and (k ~= "custom")) then
-		--print(
+		if (not MAS[k].homestate and (k ~= "prowl") and (k ~= "extrabar") and (k ~= "custom") and ((ION.class == "ROGUE") and k ~= "stealth")) then
 			data[count] = k; count = count + 1
 
 		end
