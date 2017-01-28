@@ -577,13 +577,6 @@ for index,func in ipairs(slashFunctions) do
 	end
 end
 
-
-local OverlapTalentNames = {
-	[106707] = true,
-	[175682] = true, --Druid l45 talent spell placeholder
-	[102355] = true, --Fairy Swarm Spell
-}
-
 --- Creates a table containing provided data
 -- @param index, bookType, spellName, altName, subName, spellID, spellID_Alt, spellType, spellLvl, isPassive, icon
 -- @return curSpell:  Table containing provided data

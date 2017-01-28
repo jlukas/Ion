@@ -196,16 +196,6 @@ ION.PetActions = {
 
 local PetActions = ION.PetActions
 
--- Moonfire: 8921
--- Solar Eclipse: 48517
--- Sunfire: 93402
-
--- Holy Word: Chastise: 88625
--- Chakra: 14751
--- Chakra: Prayer of Healing: 81206 - 88685
--- Chakra: Renew: 81207 - 88682
--- Chakra: Heal: 81208 - 88684
-
 
 --Spells that need their primary spell name overwritten
 local AlternateSpellNameList = {
@@ -214,7 +204,6 @@ local AlternateSpellNameList = {
 	[83243] = true,  --CallPet3
 	[83244] = true,  --CallPet4
 	[83245] = true,  --CallPet5
-	[770] = true, --fairy fire/fairy swerm
 }
 
 local unitAuras = { player = {}, target = {}, focus = {} }
@@ -452,26 +441,9 @@ local function cooldownsOnUpdate(self, elapsed)
 	end
 end
 
-
--- Moonfire: 8921
--- Solar Eclipse: 48517
--- Sunfire: 93402
-
--- Holy Word: Chastise: 88625
--- Chakra: 14751
--- Chakra: Prayer of Healing: 81206 - 88685
--- Chakra: Renew: 81207 - 88682
--- Chakra: Heal: 81208 - 88684
-
-local morphSpells = {
-	[8921] = false,
-	[88625] = false,
-}
-
 local uai__, uai_index, uai_spell, uai_count, uai_duration, uai_timeLeft, uai_caster, uai_spellID = 1
 
 local function updateAuraInfo(unit)
-
 	uai_index = 1
 
 	wipe(unitAuras[unit])
@@ -482,13 +454,6 @@ local function updateAuraInfo(unit)
 		if (uai_duration and (uai_caster == "player" or uai_caster == "pet")) then
 			unitAuras[unit][uai_spell:lower()] = "buff"..":"..uai_duration..":"..uai_timeLeft..":"..uai_count
 			unitAuras[unit][uai_spell:lower().."()"] = "buff"..":"..uai_duration..":"..uai_timeLeft..":"..uai_count
-		end
-
-		-- temp fix to detect mighty morphing power spells
-		if (uai_spellID == 48517) then morphSpells[8921] = 93402
-		elseif (uai_spellID == 81206) then morphSpells[88625] = 88685
-		elseif (uai_spellID == 81207) then morphSpells[88625] = 88682
-		elseif (uai_spellID == 81208) then morphSpells[88625] = 88684
 		end
 
 		uai_index = uai_index + 1
@@ -730,12 +695,7 @@ function BUTTON:MACRO_SetSpellIcon(spell)
 		spell = (spell):lower()
 		if (sIndex[spell]) then
 			local spell_id = sIndex[spell].spellID
-
-			if (morphSpells[spell_id]) then
-				texture = GetSpellTexture(morphSpells[spell_id])
-			elseif spell_id then
-				texture = GetSpellTexture(spell_id)
-			end
+			texture = GetSpellTexture(spell_id)
 
 		elseif (cIndex[spell]) then
 			texture = cIndex[spell].icon
@@ -1076,21 +1036,14 @@ local uaw_auraType, uaw_duration, uaw_timeLeft, uaw_count, uaw_color
 function BUTTON:MACRO_UpdateAuraWatch(unit, spell)
 
 	if (spell and (unit == self.unit or unit == "player")) then
-
-		if (self.spellID and morphSpells[self.spellID]) then
-			spell = GetSpellInfo(morphSpells[self.spellID])
-		end
-
 		spell = spell:gsub("%s*%(.+%)", ""):lower()
 
 		if (unitAuras[unit][spell]) then
-
 			uaw_auraType, uaw_duration, uaw_timeLeft, uaw_count = (":"):split(unitAuras[unit][spell])
 
 			uaw_duration = tonumber(uaw_duration); uaw_timeLeft = tonumber(uaw_timeLeft)
 
 			if (self.auraInd) then
-
 				self.auraBorder = true
 
 				if (uaw_auraType == "buff") then
@@ -1163,10 +1116,6 @@ function BUTTON:MACRO_SetSpellCooldown(spell)
 		end
 --Needs work
 		if (spell_id == GarrisonAbilityID and ZoneAbilityID) then spell_id = ZoneAbilityID end
-
-		if (morphSpells[spell_id]) then
-			spell_id = morphSpells[spell_id]
-		end
 	end
 
 	local start, duration, enable = GetSpellCooldown(spell)
@@ -2311,14 +2260,8 @@ function BUTTON:MACRO_SetSpellTooltip(spell)
 
 		if spell_id == 161691 and zoneability_id then spell_id = zoneability_id end
 
-		if (morphSpells[spell_id]) then
-			if (self.UberTooltips) then
-				GameTooltip:SetHyperlink("spell:"..morphSpells[spell_id])
-			else
-				local spell = GetSpellInfo(morphSpells[spell_id])
-				GameTooltip:SetText(spell, 1, 1, 1)
-			end
-		elseif (self.UberTooltips) then
+
+		if (self.UberTooltips) then
 			GameTooltip:SetSpellByID(spell_id)
 		else
 			local spell = GetSpellInfo(spell_id)
@@ -3499,9 +3442,6 @@ local function controlOnEvent(self, event, ...)
 
 		if (unitAuras[select(1,...)]) then
 			if (... == "player") then
-				for k,v in pairs(morphSpells) do
-					morphSpells[k] = false
-				end
 			end
 			updateAuraInfo(select(1,...))
 		end
