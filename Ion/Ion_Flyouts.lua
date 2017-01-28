@@ -435,8 +435,7 @@ function BUTTON:filter_profession(data)
 						local _, spellID = GetSpellBookItemInfo(offset+i,"professions")
 						local spellName = GetSpellInfo(spellID)
 						local isPassive = IsPassiveSpell(offset+i,"professions")
-						--print(spellName)
-						--print(arg)
+
 						if not isPassive then
 						tinsert(profSpells, spellName:lower())
 							data[spellName:lower()] = "spell"
@@ -445,6 +444,7 @@ function BUTTON:filter_profession(data)
 				end
 			end
 		end
+
 		--Check exclusions a second time for args that dont trigger earlier.
 		for _,name in pairs(profSpells) do
 			if (name:lower()):match(arg) and excluded then

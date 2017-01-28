@@ -2402,98 +2402,88 @@ local function specUpdateIcon(button,state)
 --((button.bar.cdata.dualSpec and specoveride) or 1)
 --data.macro_Icon
 	local texture = "" --"INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK"
+	local buttonSpec = button:GetSpec() 
+	local data = button.specdata[specoveride][state]
 
---local buttonSpec = button:GetSpec()
+	if (button.bar.cdata.dualSpec and specoveride ~= buttonSpec) then
+		local spell = data.macro_Text:match("/cast%s+(%C+)") or
+				data.macro_Text:match("/use%s+(%C+)") or
+				data.macro_Text:match("/summonpet%s+(%C+)") or
+				data.macro_Text:match("/equipset%s+(%C+)")
+				or data.macro_Text
 
-local buttonSpec = button:GetSpec() 
+		if (data.macro_Text:match("/cast%s+(%C+)")) then
+				spell = (spell):lower()
+				if (sIndex[spell]) then
+					local spell_id = sIndex[spell].spellID
+					texture = GetSpellTexture(spell_id)
+				elseif (cIndex[spell]) then
+					texture = cIndex[spell].icon
+				elseif (spell) then
+					texture = GetSpellTexture(spell)
+				end 
 
---print(data.macro_Icon)
---button.specdata[buttonSpec][state]
-local data = button.specdata[specoveride][state]
-if (button.bar.cdata.dualSpec and specoveride ~= buttonSpec) then
-	
-	local spell = data.macro_Text:match("/cast%s+(%C+)") or
-			data.macro_Text:match("/use%s+(%C+)") or
-			data.macro_Text:match("/summonpet%s+(%C+)") or
-			data.macro_Text:match("/equipset%s+(%C+)")
-			or data.macro_Text
+		elseif ItemCache[spell] then
+			texture = GetItemIcon("item:"..ItemCache[spell]..":0:0:0:0:0:0:0")
+		end
 
-	if (data.macro_Text:match("/cast%s+(%C+)")) then
-			spell = (spell):lower()
-			if (sIndex[spell]) then
-				local spell_id = sIndex[spell].spellID
-				texture = GetSpellTexture(spell_id)
-			elseif (cIndex[spell]) then
-				texture = cIndex[spell].icon
-			elseif (spell) then
-				texture = GetSpellTexture(spell)
-			end 
-	elseif ItemCache[spell] then
-		texture = GetItemIcon("item:"..ItemCache[spell]..":0:0:0:0:0:0:0")
+	else
+		texture = button.iconframeicon:GetTexture()
 	end
-
-else
-	texture = button.iconframeicon:GetTexture()
-end
-	--print("SETTER")
-	--print(texture)
 	return texture
 end
 
 
-
 function ION:MacroEditorUpdate()
 	if (ION.CurrentObject and ION.CurrentObject.objType == "ACTIONBUTTON") then
-
 		local button, IBTNE = ION.CurrentObject, IonButtonEditor
 		local state = button.bar.handler:GetAttribute("fauxstate")
 		local buttonSpec = button:GetSpec()
 
-	if (button.bar.cdata.dualSpec) then
-		buttonSpec = specoveride--button:GetSpec()
+		if (button.bar.cdata.dualSpec) then
+			buttonSpec = specoveride--button:GetSpec()
 
-		--Sets spec tab to current spec
-		IBTNE.spec1:SetChecked(nil)
-		IBTNE.spec2:SetChecked(nil)
-		IBTNE["spec"..buttonSpec]:SetChecked(true)
+			--Sets spec tab to current spec
+			IBTNE.spec1:SetChecked(nil)
+			IBTNE.spec2:SetChecked(nil)
+			IBTNE["spec"..buttonSpec]:SetChecked(true)
 
-		--Sets current spec marker to proper tab
-		IBTNE.activespc:SetParent(IBTNE["spec"..GetSpecialization()])
-		IBTNE.activespc:SetPoint("LEFT")
-		IBTNE.spec1:Show()
-		IBTNE.spec2:Show()
-		IBTNE.spec3:Show()
-		local player_Class = select(2, UnitClass("player"))
+			--Sets current spec marker to proper tab
+			IBTNE.activespc:SetParent(IBTNE["spec"..GetSpecialization()])
+			IBTNE.activespc:SetPoint("LEFT")
+			IBTNE.spec1:Show()
+			IBTNE.spec2:Show()
+			IBTNE.spec3:Show()
+			local player_Class = select(2, UnitClass("player"))
 
-		if (player_Class == "DEMONHUNTER") then
-			IBTNE.spec1:SetWidth(104)
-			IBTNE.spec2:SetWidth(104)
-			IBTNE.savestate:SetPoint("LEFT", IBTNE.spec2, "RIGHT", 0, 0)
+			if (player_Class == "DEMONHUNTER") then
+				IBTNE.spec1:SetWidth(104)
+				IBTNE.spec2:SetWidth(104)
+				IBTNE.savestate:SetPoint("LEFT", IBTNE.spec2, "RIGHT", 0, 0)
+				IBTNE.spec3:Hide()
+				IBTNE.spec4:Hide()
+			elseif (player_Class == "DRUID") then
+				IBTNE.spec1:SetWidth(62)
+				IBTNE.spec2:SetWidth(62)
+				IBTNE.spec3:SetWidth(62)
+				IBTNE.spec4:SetWidth(62)
+				IBTNE.spec4:Show()
+				IBTNE.savestate:SetPoint("LEFT", IBTNE.spec4, "RIGHT", 0, 0)
+				IBTNE.savestate:SetWidth(62)
+			else
+				IBTNE.spec4:Hide()
+			end
+		else
+			buttonSpec = 1
+			IBTNE.spec1:Hide()
+			IBTNE.spec2:Hide()
 			IBTNE.spec3:Hide()
 			IBTNE.spec4:Hide()
-		elseif (player_Class == "DRUID") then
-			IBTNE.spec1:SetWidth(62)
-			IBTNE.spec2:SetWidth(62)
-			IBTNE.spec3:SetWidth(62)
-			IBTNE.spec4:SetWidth(62)
-			IBTNE.spec4:Show()
-			IBTNE.savestate:SetPoint("LEFT", IBTNE.spec4, "RIGHT", 0, 0)
-			IBTNE.savestate:SetWidth(62)
-		else
-			IBTNE.spec4:Hide()
 		end
-	else
-		buttonSpec = 1
-		IBTNE.spec1:Hide()
-		IBTNE.spec2:Hide()
-		IBTNE.spec3:Hide()
-		IBTNE.spec4:Hide()
-	end
 
-	local data = button.specdata[buttonSpec][state]
+		local data = button.specdata[buttonSpec][state]
 
 		if not data then
-		
 			button.specdata[buttonSpec][state] = ION.BUTTON:MACRO_build()
 			
 			data = button.specdata[buttonSpec][state]
@@ -2586,8 +2576,6 @@ local function macroText_OnTextChanged(self)
 		local state = button.bar.handler:GetAttribute("fauxstate")
 		
 		if (button and buttonSpec and state) then
-
-
 			if button.specdata[buttonSpec][state] then
 				button.specdata[buttonSpec][state].macro_Text = self:GetText()
 				button.specdata[buttonSpec][state].macro_Watch = false
@@ -3502,8 +3490,10 @@ local function settingGetter(info)
 		return Ion.CurrentBar.cdata[ info[#info]]
 	end
 end
+
+
 local function SetBarCastTarget(value, toggle)
-		if Ion.CurrentBar then 
+	if Ion.CurrentBar then 
 		Ion.CurrentBar:SetCastingTarget(value, true, toggle)
 	end
 end
@@ -3528,7 +3518,6 @@ end
 local function flyouttypesetter(info, value)
 	if value then
 		FLYOUTMACRO["types"][info[#info]]= value
-		--print(info[#info])
 	else
 		FLYOUTMACRO["types"][info[#info]] = nil
 	end
@@ -3538,24 +3527,22 @@ local function flyouttypegitter(info)
 	return FLYOUTMACRO["types"][info[#info]]
 end
 
+
 local function flyoutgetter(info)
---print(FLYOUTMACRO[info[#info]])
- return FLYOUTMACRO[info[#info]]
-
+	return FLYOUTMACRO[info[#info]]
 end
+
+
 local finalmacro = ""
+
+
 local function createflyoutmacro()
-local macrotypes = ""
-for name,value in pairs(FLYOUTMACRO["types"]) do
-	macrotypes = macrotypes..","..name
-end
+	local macrotypes = ""
+	for name,value in pairs(FLYOUTMACRO["types"]) do
+		macrotypes = macrotypes..","..name
+	end
 
---local macrotypes = "test"--FLYOUTMACRO["item"],
-finalmacro = "/flyout "..macrotypes..":"..FLYOUTMACRO["keys"]..":"..FLYOUTMACRO["shape"]..":"..FLYOUTMACRO["attach"]..":"..FLYOUTMACRO["relative"]..":"..FLYOUTMACRO["columns"]..":"..FLYOUTMACRO["mouse"]
-
---print(finalmacro)
-
-
+	finalmacro = "/flyout "..macrotypes..":"..FLYOUTMACRO["keys"]..":"..FLYOUTMACRO["shape"]..":"..FLYOUTMACRO["attach"]..":"..FLYOUTMACRO["relative"]..":"..FLYOUTMACRO["columns"]..":"..FLYOUTMACRO["mouse"]
 end
 
 
@@ -3575,7 +3562,6 @@ local target_options = {
 					desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
 					get = function(info)  return settingGetter(info) end, --getFunc,
 					set = function(info, value) SetBarCastTarget("selfCast", value) end,
-				
 				},
 				setselfcastmod = {
 					order = 20,

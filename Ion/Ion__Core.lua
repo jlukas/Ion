@@ -635,21 +635,15 @@ function ION:UpdateSpellIndex()
 		local isPassive = IsPassiveSpell(i, BOOKTYPE_SPELL)
 
 		if (spellName and spellType ~= "FUTURESPELL") then
-
---if spellID == 106707 then print(spellID)
-
---print(spellName)
---
 			local link = GetSpellLink(spellName)
 			if (link) then
 				_, spellID = link:match("(spell:)(%d+)")
 				tempID = tonumber(spellID)
 				if (tempID) then
 					spellID = tempID
-					--print(spellID)
 				end
 			end
---end
+
 			--Fix for when trap launcher is enabled to display correct info
 			if HunterTrapLauncher[spellID] then
 				spellID = HunterTrapLauncher[spellID]
@@ -686,6 +680,7 @@ function ION:UpdateSpellIndex()
 				ICONS[#ICONS+1] = icon:upper(); icons[icon:upper()] = true
 			end
 			--]]
+
 				if (icon and not icons[icon]) then
 				ICONS[#ICONS+1] = icon; icons[icon] = true
 			end
@@ -1049,35 +1044,20 @@ function ION:UpdateStanceStrings()
 			icon, name, active, castable, spellID = GetShapeshiftFormInfo(i)
 
 			if (name) then
-			--print(name)
-				--link = GetSpellLink(name)
-
-				--if (link) then
-
-					--_, spellID = link:match("(spell:)(%d+)")
-
-					--spellID = tonumber(spellID)
-
 					if (spellID) then
-					--print(spellID)
 						ION.StanceIndex[i] = spellID
 
 						if (ION.class == "DRUID" and spellID == 768) then
 							ION.kitty = i
-							--print(i)
 						end
 					end
-				--end
-
-				--185313  shadowdance spell id
-
 
 				ION.STATES["stance"..i] = name
-
 				states = states.."[stance:"..i.."] stance"..i.."; "
 			end
 		end
 
+--Adds Shadow Dance State for Subelty Rogues
 		if (ION.class == "ROGUE" and GetSpecialization() == 3 ) then
 			ION.STATES["stance2"] = L.SHADOW_DANCE
 			ION.StanceIndex[2] = 185313
@@ -1120,7 +1100,6 @@ function ION:UpdateStanceStrings()
 		ION.MAS.stance.states = states
 	end
 end
-
 
 
 local function printSlashHelp()
@@ -2413,23 +2392,6 @@ local addonName = ...
 
 
 function IonProfile:OnInitialize()
---[[
-  self.db = LibStub("AceDB-3.0"):New("MyAddonDB")
-  self.db.char.money = GetMoney()
-if not GDB.firstRun then
-print("XF-GBD")
-	defaults.profile["IonGDB"] = CopyTable(IonGDB)
-end
-
-if  not GDB.firstRun then
-print("XF-IonCDB")
-	defaults.profile["IonCDB"] = CopyTable(IonCDB)
-end
-]]--
---if not GDB.firstRun and not CDB.firstRun then
---print("XF-GBD")
-	--defaults.profile["IonSpec"] = CopyTable(IonSpec)
---end
 	self.db = LibStub("AceDB-3.0"):New("IonProfilesDB", defaults)
 	LibStub("AceConfigRegistry-3.0"):ValidateOptionsTable(options, addonName)
 	LibStub("AceConfig-3.0"):RegisterOptionsTable(addonName, options)--, {"/myslash", "/my"})

@@ -217,7 +217,6 @@ local AlternateSpellNameList = {
 	[770] = true, --fairy fire/fairy swerm
 }
 
-
 local unitAuras = { player = {}, target = {}, focus = {} }
 
 local alphaTimer, alphaDir = 0, 0
@@ -247,45 +246,31 @@ local function AutoCastStop(shine)
 	end
 end
 
+
 local cou_distance, cou_radius, cou_timer, cou_speed, cou_degree, cou_x, cou_y, cou_position
 
---Button to cover the world map to keep the macro icon from being overwritten by the default world cursor
---[[
-local drag_button_canvas = CreateFrame("Button","mybutton",UIParent)
-drag_button_canvas:SetAllPoints()
-drag_button_canvas:SetFrameStrata("LOW")
-drag_button_canvas:SetFrameLevel(0)
---drag_button_canvas:EnableMouse(false)
-drag_button_canvas:Hide()
-]]--
 
 local function controlOnUpdate(self, elapsed)
 	for i in next,autoCast.timers do
-
 		autoCast.timers[i] = autoCast.timers[i] + elapsed
 
 		if ( autoCast.timers[i] > autoCast.speeds[i]*4 ) then
 			autoCast.timers[i] = 0
 		end
-
 	end
 
 	for i in next,autoCast.circle do
-
 		autoCast.circle[i] = autoCast.circle[i] - i
 
 		if ( autoCast.circle[i] < 0 ) then
 			autoCast.circle[i] = 359
 		end
-
 	end
 
 	for shine in next, autoCast.shines do
 		cou_distance, cou_radius = shine:GetWidth(), shine:GetWidth()/2.7
-
 		for i=1,4 do
 			cou_timer, cou_speed, cou_degree, cou_x, cou_y, cou_position = autoCast.timers[i], autoCast.speeds[i], autoCast.circle[i]
-
 			if ( cou_timer <= cou_speed ) then
 				if (shine.shape == "circle") then
 					cou_x = ((cou_radius)*(4/pi))*(cos(cou_degree)); cou_y = ((cou_radius)*(4/pi))*(sin(cou_degree))
@@ -299,7 +284,6 @@ local function controlOnUpdate(self, elapsed)
 
 					cou_x = ((cou_radius)*(4/pi))*(cos(cou_degree-270)); cou_y = ((cou_radius)*(4/pi))*(sin(cou_degree-270))
 					shine.sparkles[12+i]:SetPoint("CENTER", shine, "CENTER", cou_x, cou_y)
-
 				else
 					cou_position = cou_timer/cou_speed*cou_distance
 
@@ -383,6 +367,7 @@ local function controlOnUpdate(self, elapsed)
 		if (1-alphaTimer <= 0) then
 			alphaDir = 0; alphaTimer = 0
 		end
+
 	else
 		if (alphaTimer >= 1) then
 			alphaDir = 1; alphaTimer = 0
@@ -390,7 +375,7 @@ local function controlOnUpdate(self, elapsed)
 	end
 
 	if (MacroDrag[0]) then
-		local texture_path =GetFileName(MacroDrag.texture)
+		local texture_path = GetFileName(MacroDrag.texture)
 		--SetCursor(texture_path)
 	end
 end
@@ -422,7 +407,6 @@ local function cooldownsOnUpdate(self, elapsed)
 				if (cd.alphafade) then
 					cd:SetAlpha(cd.duration-(GetTime()-cd.start))
 				end
-
 			end
 
 		elseif (cd.timer:IsShown() and coolDown ~= cd.timerCD) then
@@ -450,7 +434,6 @@ local function cooldownsOnUpdate(self, elapsed)
 			cd.timerCD = coolDown
 			cd.timer:SetAlpha(1)
 			cd.timer:SetText(formatted)
-
 		end
 	end
 
@@ -502,7 +485,7 @@ local function updateAuraInfo(unit)
 		end
 
 		-- temp fix to detect mighty morphing power spells
-		    if (uai_spellID == 48517) then morphSpells[8921] = 93402
+		if (uai_spellID == 48517) then morphSpells[8921] = 93402
 		elseif (uai_spellID == 81206) then morphSpells[88625] = 88685
 		elseif (uai_spellID == 81207) then morphSpells[88625] = 88682
 		elseif (uai_spellID == 81208) then morphSpells[88625] = 88684
@@ -510,12 +493,11 @@ local function updateAuraInfo(unit)
 
 		uai_index = uai_index + 1
 
-   	until (not uai_spell)
+	until (not uai_spell)
 
 	uai_index = 1
 
 	repeat
-
 		uai_spell, uai__, uai__, uai_count, uai__, uai_duration, uai_timeLeft, uai_caster = UnitAura(unit, uai_index, "HARMFUL")
 
 		if (uai_duration and (uai_caster == "player" or uai_caster == "pet")) then
@@ -527,6 +509,7 @@ local function updateAuraInfo(unit)
 
 	until (not uai_spell)
 end
+
 
 local function isActiveShapeshiftSpell(spell)
 	local shapeshift, texture, name, isActive = spell:match("^[^(]+")
@@ -550,7 +533,6 @@ local function checkCursor(self, button)
 			ION:ToggleButtonGrid(nil, true)
 			DeleteMacro("IonTemp")
 		else
-
 			local texture_path =GetFileName(MacroDrag.texture)
 			--SetCursor(texture_path)
 
@@ -562,14 +544,11 @@ end
 
 function BUTTON:SetTimer(cd, start, duration, enable, timer, color1, color2, cdAlpha)
 	if ( start and start > 0 and duration > 0 and enable > 0) then
-
 		cd:SetAlpha(1)
-
 		CooldownFrame_Set(cd, start, duration, enable)
 		--CooldownFrame_SetTimer(cd, start, duration, enable)
 
 		if (duration >= GDB.timerLimit) then
-
 			cd.duration = duration
 			cd.start = start
 			cd.active = true
@@ -591,6 +570,7 @@ function BUTTON:SetTimer(cd, start, duration, enable, timer, color1, color2, cdA
 		elseif (cooldowns[cd]) then
 			cd.duration = 1
 		end
+
 	else
 		cd.duration = 0; cd.start = 0;_G.CooldownFrame_Set(cd, 0, 0, 0)--_G.CooldownFrame_SetTimer(cd, 0, 0, 0)
 	end
@@ -598,16 +578,15 @@ end
 
 
 function BUTTON:MACRO_HasAction()
-
 	local hasAction = self.data.macro_Text
 
 	if (self.actionID) then
 		if (self.actionID == 0) then
 			return true
-
 		else
 			return HasAction(self.actionID)
 		end
+
 	elseif (hasAction and #hasAction>0) then
 		return true
 	else
@@ -629,7 +608,6 @@ function BUTTON:MACRO_UpdateData(...)
 		ud_spell, ud_spellcmd, ud_show, ud_showcmd, ud_cd, ud_cdcmd, ud_aura, ud_auracmd, ud_item, ud_target, ud__ = nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
 
 		for cmd, options in gmatch(self.macroparse, "(%c%p%a+)(%C+)") do
-
 			--after gmatch, remove unneeded characters
 			if (cmd) then cmd = cmd:gsub("^%c+", "") end
 			if (options) then options = options:gsub("^%s+", "") end
@@ -662,21 +640,21 @@ function BUTTON:MACRO_UpdateData(...)
 			elseif (ud_spell and #ud_spell < 1) then
 				ud_spell, ud_target = SecureCmdOptionParse(options); ud_spellcmd = cmd
 			end
-   		end
+		end
 
-   		if (ud_spell and ud_spellcmd:find("/castsequence")) then
-     			ud__, ud_item, ud_spell = QueryCastSequence(ud_spell)
-     		elseif (ud_spell) then
-     		     	if (#ud_spell < 1) then
-     				ud_spell = nil
-     			elseif(GetItemInfo(ud_spell) or ItemCache[ud_spell]) then
-     				ud_item = ud_spell; ud_spell = nil
-     			elseif(tonumber(ud_spell) and GetInventoryItemLink("player", ud_spell)) then
-     				ud_item = GetInventoryItemLink("player", ud_spell); ud_spell = nil
-     			end
-     		end
+		if (ud_spell and ud_spellcmd:find("/castsequence")) then
+			ud__, ud_item, ud_spell = QueryCastSequence(ud_spell)
+		elseif (ud_spell) then
+			if (#ud_spell < 1) then
+				ud_spell = nil
+			elseif(GetItemInfo(ud_spell) or ItemCache[ud_spell]) then
+				ud_item = ud_spell; ud_spell = nil
+			elseif(tonumber(ud_spell) and GetInventoryItemLink("player", ud_spell)) then
+				ud_item = GetInventoryItemLink("player", ud_spell); ud_spell = nil
+			end
+		end
 
-     		self.unit = ud_target or "target"
+		self.unit = ud_target or "target"
 
 		if (ud_spell) then
 			self.macroitem = nil
@@ -694,16 +672,16 @@ function BUTTON:MACRO_UpdateData(...)
 
 		if (ud_show and ud_showcmd:find("#showicon")) then
 			if (ud_show ~= self.macroicon) then
-     				if(tonumber(ud_show) and GetInventoryItemLink("player", ud_show)) then
-     					ud_show = GetInventoryItemLink("player", ud_show)
-     				end
+				if(tonumber(ud_show) and GetInventoryItemLink("player", ud_show)) then
+					ud_show = GetInventoryItemLink("player", ud_show)
+				end
 				self.macroicon = ud_show; self.macroshow = nil
 			end
 		elseif (ud_show) then
 			if (ud_show ~= self.macroshow) then
-     				if(tonumber(ud_show) and GetInventoryItemLink("player", ud_show)) then
-     					ud_show = GetInventoryItemLink("player", ud_show)
-     				end
+				if(tonumber(ud_show) and GetInventoryItemLink("player", ud_show)) then
+					ud_show = GetInventoryItemLink("player", ud_show)
+				end
 				self.macroshow = ud_show; self.macroicon = nil
 			end
 		else
@@ -712,9 +690,9 @@ function BUTTON:MACRO_UpdateData(...)
 
 		if (ud_cd) then
 			if (ud_cd ~= self.macrocd) then
-     				if(tonumber(ud_aura) and GetInventoryItemLink("player", ud_cd)) then
-     					ud_aura = GetInventoryItemLink("player", ud_cd)
-     				end
+				if(tonumber(ud_aura) and GetInventoryItemLink("player", ud_cd)) then
+					ud_aura = GetInventoryItemLink("player", ud_cd)
+				end
 				self.macrocd = ud_aura
 			end
 		else
@@ -723,9 +701,9 @@ function BUTTON:MACRO_UpdateData(...)
 
 		if (ud_aura) then
 			if (ud_aura ~= self.macroaura) then
-     				if(tonumber(ud_aura) and GetInventoryItemLink("player", ud_aura)) then
-     					ud_aura = GetInventoryItemLink("player", ud_aura)
-     				end
+				if(tonumber(ud_aura) and GetInventoryItemLink("player", ud_aura)) then
+					ud_aura = GetInventoryItemLink("player", ud_aura)
+				end
 				self.macroaura = ud_aura
 			end
 		else
@@ -789,16 +767,11 @@ function BUTTON:MACRO_SetSpellIcon(spell)
 			--	print(select(i,GetMacroInfo(self.data.macro_Watch)))
 			--end
 
-			_, texture = GetMacroInfo(self.data.macro_Watch)
-			
+			_, texture = GetMacroInfo(self.data.macro_Watch)	
 			--texture = "INTERFACE\\ICONS\\"..texture:match("[%w_]+$"):upper()
-
 			self.data.macro_Icon = texture
-
 		elseif (self.data.macro_Equip) then
-
 			texture = GetEquipmentSetInfoByName(self.data.macro_Equip)
-
 		end
 
 		if (texture) then
@@ -807,7 +780,6 @@ function BUTTON:MACRO_SetSpellIcon(spell)
 		else
 			self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 		end
-
 	end
 
 	return texture
@@ -818,14 +790,13 @@ function BUTTON:MACRO_SetItemIcon(item)
 	local _,texture, link, itemID
 
 	if (IsEquippedItem(item)) then
-
 		self.border:SetVertexColor(0, 1.0, 0, 0.5)
 		self.border:Show()
-
 	else
 		self.border:Hide()
 	end
-Icon_Overwrite = false
+
+	Icon_Overwrite = false
 
 	--There is stored icon and dont want to updtee icon on fly
 	if (((type(self.data.macro_Icon) == "string" and #self.data.macro_Icon > 0) or type(self.data.macro_Icon) == "number" ) and Icon_Overwrite) then
@@ -863,7 +834,6 @@ Icon_Overwrite = false
 	self.iconframeicon:Show()
 
 	return self.iconframeicon:GetTexture()
-
 end
 
 
@@ -871,9 +841,7 @@ function BUTTON:ACTION_SetIcon(action)
 	local actionID = tonumber(action)
 
 	if (actionID) then
-
 		if (actionID == 0) then
-
 			if (self.specAction and SpecialActions[self.specAction]) then
 				self.iconframeicon:SetTexture(SpecialActions[self.specAction])
 			else
@@ -900,44 +868,31 @@ end
 
 
 function BUTTON:MACRO_UpdateIcon(...)
-
 	self.updateMacroIcon = nil
-self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
+	self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
+
 	local spell, item, show, texture = self.macrospell, self.macroitem, self.macroshow, self.macroicon
---print(spell)
---print(item)
---print(show)
---print(texture)
+
 	if (self.actionID) then
-
 		texture = self:ACTION_SetIcon(self.actionID)
-
 	elseif (show and #show>0) then
-
-        if(GetItemInfo(show) or ItemCache[show]) then
-            	texture = self:MACRO_SetItemIcon(show)
-        else
-		texture = self:MACRO_SetSpellIcon(show)
-            	self:MACRO_SetSpellState(show)
-        end
+		if(GetItemInfo(show) or ItemCache[show]) then
+			texture = self:MACRO_SetItemIcon(show)
+		else
+			texture = self:MACRO_SetSpellIcon(show)
+			self:MACRO_SetSpellState(show)
+		end
 
 	elseif (spell and #spell>0) then
-
 		texture = self:MACRO_SetSpellIcon(spell)
-        	self:MACRO_SetSpellState(spell)
-
+		self:MACRO_SetSpellState(spell)
 	elseif (item and #item>0) then
-
 		texture = self:MACRO_SetItemIcon(item)
-
 	elseif (#self.data.macro_Text > 0) then
-
 		local equipset = self.data.macro_Text:match("/equipset%s+(%C+)")
 
 		if (equipset) then
-
 			equipset = equipset:gsub("%pnobtn:2%p ", "")
-
 			local icon, _, isEquipped = GetEquipmentSetInfoByName(equipset)
 
 			if (isEquipped) then
@@ -951,16 +906,12 @@ self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 			end
 
 		elseif (self.data.macro_Icon) then
-
 			self.iconframeicon:SetTexture(self.data.macro_Icon)
-
 		else
-
 			self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 		end
 
 		self.iconframeicon:Show()
-
 	else
 		self.macroname:SetText("")
 		self.iconframeicon:SetTexture("")
@@ -977,6 +928,7 @@ self.iconframeicon:SetTexture("INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK")
 	return texture
 end
 
+
 function BUTTON:MACRO_StartGlow()
 
 	if (self.spellGlowDef) then
@@ -986,11 +938,10 @@ function BUTTON:MACRO_StartGlow()
 	end
 
 	self.glowing = true
-
 end
 
-function BUTTON:MACRO_StopGlow()
 
+function BUTTON:MACRO_StopGlow()
 	if (self.spellGlowDef) then
 		HideOverlayGlow(self)
 	elseif (self.spellGlowAlt) then
@@ -1002,21 +953,19 @@ end
 
 
 function BUTTON:MACRO_SetSpellState(spell)
+	local charges, maxCharges, chargeStart, chargeDuration = GetSpellCharges(spell)
+	if (maxCharges and maxCharges > 1) then
+		self.count:SetText(charges)
+	else
+		self.count:SetText("")
+	end
 
-    local charges, maxCharges, chargeStart, chargeDuration = GetSpellCharges(spell)
-    if (maxCharges and maxCharges > 1) then
-        self.count:SetText(charges)
-    else
-        self.count:SetText("")
-    end
+	count = GetSpellCount(spell)
+	if (count and count > 0) then
+		self.count:SetText(count)
+	end
 
-    count = GetSpellCount(spell)
-    if (count and count > 0) then
-        self.count:SetText(count)
-    end
-
-    if (cIndex[spell:lower()]) then
-
+	if (cIndex[spell:lower()]) then
 		spell = cIndex[spell:lower()].spellID
 
 		if (IsCurrentSpell(spell) or IsAutoRepeatSpell(spell)) then
@@ -1025,7 +974,6 @@ function BUTTON:MACRO_SetSpellState(spell)
 			self:SetChecked(nil)
 		end
 	else
-
 		if (IsCurrentSpell(spell) or IsAutoRepeatSpell(spell) or isActiveShapeshiftSpell(spell:lower())) then
 			self:SetChecked(1)
 		else
@@ -1041,6 +989,7 @@ function BUTTON:MACRO_SetSpellState(spell)
 
 	self.macroname:SetText(self.data.macro_Name)
 end
+
 
 function BUTTON:MACRO_SetItemState(item)
 
@@ -1059,13 +1008,11 @@ function BUTTON:MACRO_SetItemState(item)
 end
 
 function BUTTON:ACTION_UpdateState(action)
-
 	local actionID = tonumber(action)
 
 	self.count:SetText("")
 
 	if (actionID) then
-
 		self.macroname:SetText("")
 
 		if (IsCurrentAction(actionID) or IsAutoRepeatAction(actionID)) then
@@ -1084,6 +1031,7 @@ function BUTTON:ACTION_UpdateState(action)
 		self.mac_flash = false
 	end
 end
+
 
 function BUTTON:MACRO_UpdateState(...)
 
@@ -1277,53 +1225,41 @@ function BUTTON:ACTION_SetCooldown(action)
 	end
 end
 
-function BUTTON:MACRO_UpdateCooldown(update)
 
+function BUTTON:MACRO_UpdateCooldown(update)
 	local spell, item, show = self.macrospell, self.macroitem, self.macroshow
 
 	if (self.actionID) then
-
 		self:ACTION_SetCooldown(self.actionID)
-
 	elseif (show and #show>0) then
-
-    		if(GetItemInfo(show) or ItemCache[show]) then
+		if(GetItemInfo(show) or ItemCache[show]) then
 			self:MACRO_SetItemCooldown(show)
-    		else
+		else
 			self:MACRO_SetSpellCooldown(show)
-    		end
+		end
 
 	elseif (spell and #spell>0) then
-
 		self:MACRO_SetSpellCooldown(spell)
-
 	elseif (item and #item>0) then
-
 		self:MACRO_SetItemCooldown(item)
-
 	else
-
 		self:SetTimer(self.iconframecooldown, 0, 0, 0, self.cdText, self.cdcolor1, self.cdcolor2, self.cdAlpha)
-
 	end
 end
 
 function BUTTON:MACRO_UpdateTimers(...)
-
 	self:MACRO_UpdateCooldown()
 
 	for k in pairs(unitAuras) do
 		self:MACRO_UpdateAuraWatch(k, self.macrospell)
 	end
-
 end
 
-function BUTTON:MACRO_UpdateTexture(force)
 
+function BUTTON:MACRO_UpdateTexture(force)
 	local hasAction = self:MACRO_HasAction()
 
 	if (not self:GetSkinned()) then
-
 		if (hasAction or force) then
 			self:SetNormalTexture(self.hasAction or "")
 			self:GetNormalTexture():SetVertexColor(1,1,1,1)
@@ -1334,8 +1270,8 @@ function BUTTON:MACRO_UpdateTexture(force)
 	end
 end
 
-function BUTTON:MACRO_UpdateAll(updateTexture)
 
+function BUTTON:MACRO_UpdateAll(updateTexture)
 	self:MACRO_UpdateData()
 	self:MACRO_UpdateButton()
 	self:MACRO_UpdateIcon()
@@ -1347,11 +1283,10 @@ function BUTTON:MACRO_UpdateAll(updateTexture)
 	end
 end
 
+
 --local garrisonAbility = GetSpellInfo(161691):lower()
 function BUTTON:MACRO_UpdateUsableSpell(spell)
-
 	local isUsable, notEnoughMana, alt_Name
-
 	local spellName = spell:lower()
 
 	if (sIndex[spellName]) and (sIndex[spellName].spellID ~= sIndex[spellName].spellID_Alt) and sIndex[spellName].spellID_Alt then
@@ -1361,18 +1296,14 @@ function BUTTON:MACRO_UpdateUsableSpell(spell)
 	else
 		isUsable, notEnoughMana = IsUsableSpell(spellName)
 	end
+
 	if (spellName == GetSpellInfo(161691):lower()) then 
-		--print(GetSpellInfo(DraenorZoneAbilityFrame.SpellButton.currentSpellID))
 	end
---print(spell)
---print(sIndex[spellName].spellID)
---print(sIndex[spellName].spellID_Alt)
---print(IsUsableSpell(spellName))
+
 	if (notEnoughMana) then
 		self.iconframeicon:SetVertexColor(self.manacolor[1], self.manacolor[2], self.manacolor[3])
 		--self.iconframerange:SetVertexColor(self.manacolor[1], self.manacolor[2], self.manacolor[3], 0.5)
 		--self.iconframerange:Show()
-
 	elseif (isUsable) then
 		if (self.rangeInd and IsSpellInRange(spellName, self.unit) == 0) then
 			self.iconframeicon:SetVertexColor(self.rangecolor[1], self.rangecolor[2], self.rangecolor[3])
@@ -1387,7 +1318,6 @@ function BUTTON:MACRO_UpdateUsableSpell(spell)
 
 	else
 		if (sIndex[(spell):lower()]) then
-
 			self.iconframeicon:SetVertexColor(0.4, 0.4, 0.4)
 			--self.iconframerange:SetVertexColor(0.4, 0.4, 0.4, 0.5)
 			--self.iconframerange:Show()
@@ -1396,8 +1326,8 @@ function BUTTON:MACRO_UpdateUsableSpell(spell)
 			--self.iconframerange:Hide()
 		end
 	end
-
 end
+
 
 function BUTTON:MACRO_UpdateUsableItem(item)
 	local isUsable, notEnoughMana = IsUsableItem(item)-- or PlayerHasToy(ItemCache[item])
@@ -1405,36 +1335,30 @@ function BUTTON:MACRO_UpdateUsableItem(item)
 	if tIndex[item:lower()] then isUsable = true end
 
 	if (notEnoughMana and self.manacolor) then
-
 		self.iconframeicon:SetVertexColor(self.manacolor[1], self.manacolor[2], self.manacolor[3])
-
 	elseif (isUsable) then
-
 		if (self.rangeInd and IsItemInRange(spell, self.unit) == 0) then
 			self.iconframeicon:SetVertexColor(self.rangecolor[1], self.rangecolor[2], self.rangecolor[3])
 		else
 			self.iconframeicon:SetVertexColor(1.0, 1.0, 1.0)
 		end
+
 	else
 		self.iconframeicon:SetVertexColor(0.4, 0.4, 0.4)
 	end
 end
 
-function BUTTON:ACTION_UpdateUsable(action)
 
+function BUTTON:ACTION_UpdateUsable(action)
 	local actionID = tonumber(action)
 
 	if (actionID) then
-
 		if (actionID == 0) then
-
 			self.iconframeicon:SetVertexColor(1.0, 1.0, 1.0)
 		else
-
 			local isUsable, notEnoughMana = IsUsableAction(actionID)
 
 			if (isUsable) then
-
 				if (IsActionInRange(action, self.unit) == 0) then
 					self.iconframeicon:SetVertexColor(self.rangecolor[1], self.rangecolor[2], self.rangecolor[3])
 				else
@@ -1442,9 +1366,7 @@ function BUTTON:ACTION_UpdateUsable(action)
 				end
 
 			elseif (notEnoughMana and self.manacolor) then
-
 				self.iconframeicon:SetVertexColor(self.manacolor[1], self.manacolor[2], self.manacolor[3])
-
 			else
 				self.iconframeicon:SetVertexColor(0.4, 0.4, 0.4)
 			end
@@ -1454,6 +1376,7 @@ function BUTTON:ACTION_UpdateUsable(action)
 		self.iconframeicon:SetVertexColor(1.0, 1.0, 1.0)
 	end
 end
+
 
 function BUTTON:MACRO_UpdateButton(...)
 
@@ -2684,17 +2607,13 @@ function BUTTON:MACRO_OnAttributeChanged(name, value)
 			--This will remove any old button state data from the saved varabiels/memory
 			--for id,data in pairs(self.bar.cdata) do
 			for id,data in pairs(self.statedata) do
-				--print("id:"..id)
 				if (self.bar.cdata[id:match("%a+")]) or (id == "" and self.bar.cdata["custom"])  then 
-				--print("STATE FOUND:"..id)
 				elseif not self.bar.cdata[id:match("%a+")] then
-				--print("Old state:"..id)
 					self.statedata[id]= nil
 			end
 		end
 
 			self.specAction = self:GetAttribute("SpecialAction")
-
 			self:MACRO_UpdateAll(true)
 		end
 
@@ -2707,7 +2626,6 @@ end
 
 function BUTTON:MACRO_build()
 	local button = CopyTable(stateData)
-	--print(button.macro_Text)
 	return button
 end
 
@@ -3565,9 +3483,7 @@ end
 
 --callback(arg and arg, Group, SkinID, Gloss, Backdrop, Colors, Fonts)
 
-
 function ION:SKINCallback(group,...)
-
 	if (group) then
 		for btn in pairs(SKINIndex) do
 			if (btn.bar and btn.bar.gdata.name == group) then
@@ -3591,7 +3507,6 @@ local function controlOnEvent(self, event, ...)
 		end
 
 	elseif (event == "PLAYER_TARGET_CHANGED") then
-
 		for k in pairs(unitAuras) do
 			updateAuraInfo(k)
 		end
@@ -3647,9 +3562,7 @@ local function controlOnEvent(self, event, ...)
 
 	elseif (event == "VARIABLES_LOADED") then
 
-
 	elseif (event == "PLAYER_LOGIN") then
-
 		SPEC = IonSpec
 
 		for k in pairs(unitAuras) do
@@ -3660,13 +3573,10 @@ local function controlOnEvent(self, event, ...)
 		WorldFrame:HookScript("OnMouseDown", checkCursor)
 
 	elseif (event == "PLAYER_ENTERING_WORLD" and not PEW) then
-
 		PEW = true
 
 	elseif (event == "ACTIONBAR_SHOWGRID") then
-
 		StartDrag = true
-
 	end
 end
 
@@ -3733,10 +3643,8 @@ function BUTTON:UpdateMacroCastTargets(global_update)
 						if spell then 
 							if global_update then 
 								info.macro_Text = ION.BUTTON:AutoUpdateMacro(info.macro_Text)
-								--print(info.macro_Text)
 							else
 								info.macro_Text = ION.BUTTON:AutoWriteMacro(spell, subName)
-								--print(info.macro_Text)
 							end
 							
 						end
@@ -3744,6 +3652,7 @@ function BUTTON:UpdateMacroCastTargets(global_update)
 					end
 				end
 		end
+
 		if macro_update then
 			button:UpdateFlyout()
 			button:BuildStateData()
