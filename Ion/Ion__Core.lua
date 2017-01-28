@@ -584,12 +584,6 @@ local OverlapTalentNames = {
 	[102355] = true, --Fairy Swarm Spell
 }
 
-local HunterTrapLauncher = {
-	[60192] = 1499, --Freezing Trap
-	[82939] = 13813, --Exp Trap
-	[82941] = 13809, --ice trap
-}
-
 --- Creates a table containing provided data
 -- @param index, bookType, spellName, altName, subName, spellID, spellID_Alt, spellType, spellLvl, isPassive, icon
 -- @return curSpell:  Table containing provided data
@@ -642,11 +636,6 @@ function ION:UpdateSpellIndex()
 				if (tempID) then
 					spellID = tempID
 				end
-			end
-
-			--Fix for when trap launcher is enabled to display correct info
-			if HunterTrapLauncher[spellID] then
-				spellID = HunterTrapLauncher[spellID]
 			end
 
 			local altName, subName, icon, castTime, minRange, maxRange = GetSpellInfo(spellID)
