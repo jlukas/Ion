@@ -364,6 +364,8 @@ L.GUI_EXTRABAR = "Extra Bar"
 L.GUI_CUSTOM = "Custom"
 L.GUI_PROWL = "Prowl"
 
+L.SHADOW_DANCE = "Shadow Dance"
+
 
 
 L.REMAP = "Primary State to Remap"

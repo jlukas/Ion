@@ -519,7 +519,7 @@ function HANDLER:BuildStateMap(bar, remapState)
 		end
 
 		if (remapState == "stance" and ION.class == "ROGUE" and map == "1") then
-			statemap = statemap.."[stance:2] stance1"
+			--statemap = statemap.."[stance:2] stance1"
 		end
 
 	end
@@ -1284,6 +1284,14 @@ function BAR:SetRemap_Stance()
 				end
 			end
 		end
+		if (ION.class == "ROGUE") then
+			--for i,id in pairs(ION.StanceIndex) do
+
+			self.cdata.remap = self.cdata.remap..";2:2"
+			--end
+		end
+
+		--print(self.cdata.remap )
 	end
 end
 

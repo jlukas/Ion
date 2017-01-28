@@ -3553,7 +3553,7 @@ end
 --local macrotypes = "test"--FLYOUTMACRO["item"],
 finalmacro = "/flyout "..macrotypes..":"..FLYOUTMACRO["keys"]..":"..FLYOUTMACRO["shape"]..":"..FLYOUTMACRO["attach"]..":"..FLYOUTMACRO["relative"]..":"..FLYOUTMACRO["columns"]..":"..FLYOUTMACRO["mouse"]
 
-print(finalmacro)
+--print(finalmacro)
 
 
 end
@@ -3784,7 +3784,7 @@ local target_options = {
 					step = 1,
 					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
 					--desc = L.SPELL_TARGETING_SELF_CAST_MODIFIER_TOGGLE,
-					get = function(info)  print(flyoutgetter(info));return flyoutgetter(info) end, --getFunc,
+					get = function(info) return flyoutgetter(info) end, --getFunc,
 					set = function(info, value) flyoutsetter(info, value) end,
 				},
 				mouse = {

@@ -1069,10 +1069,19 @@ function ION:UpdateStanceStrings()
 					end
 				--end
 
+				--185313  shadowdance spell id
+
+
 				ION.STATES["stance"..i] = name
 
 				states = states.."[stance:"..i.."] stance"..i.."; "
 			end
+		end
+
+		if (ION.class == "ROGUE" and GetSpecialization() == 3 ) then
+			ION.STATES["stance2"] = L.SHADOW_DANCE
+			ION.StanceIndex[2] = 185313
+			states = states.."[stance:2] stance2; "
 		end
 
 		states = states:gsub("; $", "")
@@ -1094,7 +1103,6 @@ function ION:UpdateStanceStrings()
 
 			if (ION.class == "ROGUE") then
 				ION.STATES.stance0 = L.ROGUE_MELEE
-				states = states.."[stance:2] stance1; "
 			end
 
 			if (ION.class == "WARLOCK") then
