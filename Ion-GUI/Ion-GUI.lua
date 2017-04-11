@@ -2052,7 +2052,7 @@ function ION.SecondaryPresetsScrollFrameUpdate(frame, tableList, alt)
 
 	for k in pairs(tableList) do
 
-		if (not MAS[k].homestate and (k ~= "prowl") and (k ~= "extrabar") and (k ~= "custom") and ((ION.class == "ROGUE") and k ~= "stealth")) then
+		if (not MAS[k].homestate and (k ~= "prowl") and (k ~= "extrabar") and (k ~= "custom") or ((ION.class == "ROGUE") and k ~= "stealth")) then
 			data[count] = k; count = count + 1
 
 		end
@@ -2501,7 +2501,7 @@ function ION:MacroEditorUpdate()
 			else
 				IBTNE.macroicon.icon:SetTexture(data.macro_Icon)
 			end
-
+print(data.macro_Name)
 			IBTNE.nameedit:SetText(data.macro_Name)
 			IBTNE.noteedit:SetText(data.macro_Note)
 			IBTNE.usenote:SetChecked(data.macro_UseNote)

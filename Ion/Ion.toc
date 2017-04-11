@@ -1,9 +1,9 @@
-## Interface: 70100 
+## Interface: 70200 
 ## Title: Ion
 ## Notes: Ion: Action Bar & Object Mananger
 ## Author: Connor Chenoweth (aka Maul)
 ## X-Credits-Maintainer: SLOKnightfall
-## Version: Helium  2.0.2 - Legion Release
+## Version: Helium  2.1
 ## DefaultState: enabled
 ## SavedVariables: IonGDB, IonItemCache, IonProfilesDB
 ## SavedVariablesPerCharacter: IonCDB, IonSpec, 

@@ -1986,11 +1986,12 @@ local function macroFuss(MacroDrag)
 	if MacroDrag[6] then
 		PickupMacro(MacroDrag[6])
 	else
+		local texture = MacroDrag.texture or "INTERFACE\\ICONS\\INV_MISC_QUESTIONMARK"
 		macroExists = GetMacroInfo("IonTemp")
 		if macroExists then
-			macroIndex = EditMacro(macroIndex, "IonTemp", MacroDrag.texture, "")
+			macroIndex = EditMacro(macroIndex, "IonTemp", texture, "")
 		else
-			macroIndex = CreateMacro("IonTemp", MacroDrag.texture, "")
+			macroIndex = CreateMacro("IonTemp",texture, "")
 		end
 		PickupMacro("IonTemp")
 		MacroDrag[0] = "macro"
