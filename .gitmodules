@@ -1,0 +1,12 @@
+[submodule "Ion-PetBar"]
+	path = Ion-PetBar
+	url = https://github.com/SLOKnightfall/Ion-PetBar
+[submodule "Ion-MenuBar"]
+	path = Ion-MenuBar
+	url = https://github.com/SLOKnightfall/Ion-MenuBar
+[submodule "Ion-BagBar"]
+	path = Ion-BagBar
+	url = https://github.com/SLOKnightfall/Ion-BagBar
+[submodule "Ion-StatusBars"]
+	path = Ion-StatusBars
+	url = https://github.com/SLOKnightfall/Ion-StatusBars
