@@ -1,0 +1,9 @@
+package-as: Ion-Core
+enable-nolib-creation: no
+
+ignore:
+    - README.md
+
+move-folders:
+    ION-Core/Ion: Ion
+    ION-Core/Ion-GUI: Ion-GUI
