@@ -3,7 +3,7 @@
 
 --English spelling validated by Eledryn
 local AddOnFolderName, private = ...
-.
+
 -- See http://wow.curseforge.com/addons/ion-status-bars/localization/
 local L = _G.LibStub("AceLocale-3.0"):NewLocale("Ion", "enUS", true)
 

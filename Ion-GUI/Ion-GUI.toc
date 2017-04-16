@@ -1,5 +1,5 @@
 ## Interface: 70200
-## Title: Ion: GUI
+## Title: Ion: GUI (@project-version@)
 ## Author: Maul
 ## X-Credits-Maintainer: SLOKnightfall
 ## Version: @project-version@
