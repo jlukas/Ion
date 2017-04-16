@@ -1,9 +1,23 @@
 package-as: Ion-Core
+
 enable-nolib-creation: no
 
 ignore:
     - README.md
+    - Ion/Libs/
+    - Ion-GUI/Libs/
 
-move-folders:
-    ION-Core/Ion: Ion
-    ION-Core/Ion-GUI: Ion-GUI
+  externals:
+    Ion/Libs/AceAddon-3.0: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
+    Ion/Libs/AceConfig-3.0:  https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0
+    Ion/Libs/AceDB-3.0: https://repos.wowace.com/wow/ace3/trunk/AceDB-3.0
+    Ion/Libs/AceDBOptions-3.0: https://repos.wowace.com/wow/ace3/trunk/AceDBOptions-3.0
+    Ion/Libs/AceEvent-3.0: https://repos.wowace.com/wow/ace3/trunk/AceEvent-3.0
+    Ion/Libs/AceGUI-3.0: https://repos.wowace.com/wow/ace3/trunk/AceGUI-3.0
+    Ion/Libs/AceLocale-3.0: https://repos.wowace.com/wow/ace3/trunk/AceLocale-3.0
+    Ion/Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+    Ion/Libs/FileDataLib: https://repos.curseforge.com/wow/filedatalib 
+    Ion/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk 
+    Ion/Libs/LibDataBroker-1.1: https://repos.wowace.com/wow/libdatabroker-1-1
+    Ion-GUI/Libs/AceLocale-3.0: https://repos.wowace.com/wow/ace3/trunk/AceLocale-3.0
+    Ion-GUI/Libs/LibStub: https://repos.wowace.com/wow/libstub/trunk 
