@@ -5,10 +5,13 @@
 -- http://www.curseforge.com/profiles/Murida/
 -- http://www.curseforge.com/profiles/angel100780/
 
-local L = LibStub("AceLocale-3.0"):NewLocale("Ion", "deDE", false)
+local AddOnFolderName, private = ...
+-- See http://wow.curseforge.com/addons/ion-status-bars/localization/
+local L = _G.LibStub("AceLocale-3.0"):NewLocale("Ion", "deDE", false)
+if not L then return end 
+--@localization(locale="deDE", format="lua_additive_table", handle-unlocalized="comment")@
 
-if L then
-
+--@do-not-package@
 L.DEFAULT = "Default"
 
 L.ACTION = "Aktionsinformationen" -- Needs review
@@ -334,5 +337,4 @@ L.VPAD = "Vert Pad" -- Needs review
 L.WARLOCK_CASTER = "Normale Gestalt" -- Needs review
 L.XPOS = "X Pos" -- Needs review
 L.YPOS = "Y Pos" -- Needs review
-
-end
+--@end-do-not-package@

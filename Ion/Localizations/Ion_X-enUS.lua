@@ -2,9 +2,15 @@
 --Copyright© 2006-2014 Connor H. Chenoweth, aka Maul - All rights reserved.
 
 --English spelling validated by Eledryn
+local AddOnFolderName, private = ..
+.
+-- See http://wow.curseforge.com/addons/ion-status-bars/localization/
+local L = _G.LibStub("AceLocale-3.0"):NewLocale("Ion", "enUS", true)
 
-local L = LibStub("AceLocale-3.0"):NewLocale("Ion", "enUS", true)
+if not L then return end 
+--@localization(locale="enUS", format="lua_additive_table", handle-unlocalized="comment")@
 
+--@do-not-package@
 L.ION = "Ion"
 
 L.DEFAULT = "Default"
@@ -475,3 +481,4 @@ L.SPELL_TARGETING_SELF_CAST_RIGHTCLICK_SELECT = "Select the Self-Cast Modifier"
 L.SPELL_TARGETING_MODIFIER_NONE_REMINDER = "\"None\" as modifier for Self & Focus Casting means its disabled. \nFor Mouse-Over Casting it means its always active, and no modifier is required."
 
 L.ZONEABILITY_BAR_BORDER = "Show Bar Border"
+--@end-do-not-package@
