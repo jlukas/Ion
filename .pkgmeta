@@ -1,5 +1,9 @@
 package-as: Ion
 
+manual-changelog:
+    filename: CHANGELOG.md
+    markup-type: markdown
+
 externals:
     Ion/Libs/AceAddon-3.0: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
     Ion/Libs/AceConfig-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0

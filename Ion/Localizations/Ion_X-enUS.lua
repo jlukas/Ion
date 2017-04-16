@@ -2,7 +2,7 @@
 --Copyright© 2006-2014 Connor H. Chenoweth, aka Maul - All rights reserved.
 
 --English spelling validated by Eledryn
-local AddOnFolderName, private = ..
+local AddOnFolderName, private = ...
 .
 -- See http://wow.curseforge.com/addons/ion-status-bars/localization/
 local L = _G.LibStub("AceLocale-3.0"):NewLocale("Ion", "enUS", true)
