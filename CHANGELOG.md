@@ -12,4 +12,3 @@
  - Fixed issue where macro text would not clear between bar states.
  - Fixed some issues with flyouts not generating correctly.
  - Added flyout macro generator to the button editor window.
-
