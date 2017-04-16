@@ -1,5 +1,0 @@
-## Interface: 70000
-## Title: FileDataLib
-## Author: TOM_RUS
-## Notes: FileDataLib
-FileDataLib.lua
