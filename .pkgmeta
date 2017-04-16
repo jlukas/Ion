@@ -21,3 +21,7 @@ ignore:
     - README.md
     - Ion/Libs/
     - Ion-GUI/Libs/
+
+move-folders:
+    Ion-Core/Ion: Ion
+    Ion-Core/Ion-GUI: Ion-GUI
